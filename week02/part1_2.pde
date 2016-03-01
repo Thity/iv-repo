@@ -165,11 +165,11 @@ float[][] scaleMatrix(float x, float y, float z) {
 }
 
 float[][] translationMatrix(float x, float y, float z) {
-  float [][] T = {{ 1, 0, 0, x}, 
-    { 0, 1, 0, y}, 
-    { 0, 0, 1, z}, 
-    { 0, 0, 0, 1 } 
-  };
+  return(new float[][] {
+    {1, 0, 0, x}, 
+    {0, 1, 0, y}, 
+    {0, 0, 1, z}, 
+    {0, 0, 0, 1}});
 }
 
 float[] matrixProduct(float[][] a, float[] b) {
@@ -180,6 +180,8 @@ float[] matrixProduct(float[][] a, float[] b) {
   return multiply(a, b2);
 }
 
+
+// A terminer
 My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
   float [][] transformedPoints = new float[4][8]; 
   float[] points = new float[4][8];
@@ -188,10 +190,9 @@ My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
       points[i][1] = box.p[i].y;
       points[i][2] = box.p[i].z;
       points[i][3] = 1;
-      transformedPoints[i][] // A terminer
+      transformedPoints[i][];
   }
-  
-  matrixProduct(transformMatrix, box.p)
+  return matrixProduct(transformMatrix, box.p)
 //Complete the code! You need to use the euclidian3DPoint() function given below.
 }
 
