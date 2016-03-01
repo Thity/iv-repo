@@ -1,15 +1,27 @@
 void settings() {
-  size(400, 400, P2D);
+  size(1000, 1000, P2D);
 }
-void setup() {
+void setup () {
 }
 void draw() {
-  My3DPoint eye = new My3DPoint(-100, -100, -5000);
-  My3DPoint origin = new My3DPoint(0, 0, 0); //The first vertex of your cuboid 
-  My3DBox input3DBox = new My3DBox(origin, 100,150,300);
+  background(255, 255, 255);
+  My3DPoint eye = new My3DPoint(0, 0, -5000);
+  My3DPoint origin = new My3DPoint(0, 0, 0);
+
+  My3DBox input3DBox = new My3DBox(origin, 100, 150, 300);
+  //rotated around x
+  float[][] transform1 = rotateXMatrix(PI/8);
+  input3DBox = transformBox(input3DBox, transform1);
+  projectBox(eye, input3DBox).render();
+  //rotated and translated
+  float[][] transform2 = translationMatrix(200, 200, 0);
+  input3DBox = transformBox(input3DBox, transform2);
+  projectBox(eye, input3DBox).render();
+  //rotated, translated, and scaled
+  float[][] transform3 = scaleMatrix(2, 2, 2);
+  input3DBox = transformBox(input3DBox, transform3);
   projectBox(eye, input3DBox).render();
 }
-
 
 class My2DPoint {
   float x;
@@ -162,41 +174,45 @@ float[][] scaleMatrix(float x, float y, float z) {
     {0, 0, 0, 1}});
 }
 
+
 float[][] translationMatrix(float x, float y, float z) {
-  return(new float[][] {
-    {1, 0, 0, x}, 
-    {0, 1, 0, y}, 
-    {0, 0, 1, z}, 
-    {0, 0, 0, 1}});
+  float [][] T = {{ 1, 0, 0, x}, 
+    { 0, 1, 0, y}, 
+    { 0, 0, 1, z}, 
+    { 0, 0, 0, 1 } 
+  };
+  return T;
 }
 
 float[] matrixProduct(float[][] a, float[] b) {
   float[][] b2 = new float[b.length][1];
-  for(int i = 0 ; i < b.length ; i++){
+    for (int i = 0; i < b.length; i++) {
     b2[i][0] = b[i];
   }
-  return multiply(a, b2)[0];
+  float [][] matriz =  multiply(a, b2);
+  float [] vector = new float[b.length];
+  for (int i=0; i < b.length; i++) {
+    vector[i]=matriz[i][0];
+  }
+  return vector;
 }
 
-
-// A terminer
-
-
 My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
-  float [][] transformedPoints = new float[4][8]; 
-  float[] points = new float[4][8];
-  for(int i = 0 ; i < 8 ; i++){
-      points[i][0] = box.p[i].x;
-      points[i][1] = box.p[i].y;
-      points[i][2] = box.p[i].z;
-      points[i][3] = 1;
-      transformedPoints[i][];
+  float[] points = new float[4];
+  float[] vector = new float[4];
+  My3DPoint[] p = new My3DPoint[8];
+  for (int i = 0; i < 8; i++) {
+    points[0] = box.p[i].x;
+    points[1] = box.p[i].y;
+    points[2] = box.p[i].z;
+    points[3] = 1;
+    vector = matrixProduct(transformMatrix, points);
+    p[i] = euclidian3DPoint(vector);
   }
-  return matrixProduct(transformMatrix, box.p)
-//Complete the code! You need to use the euclidian3DPoint() function given below.
+  return new My3DBox(p);
 }
 
 My3DPoint euclidian3DPoint (float[] a) {
-My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
-return result;
+  My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
+  return result;
 }
