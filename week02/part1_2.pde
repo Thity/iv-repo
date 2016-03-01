@@ -179,3 +179,23 @@ float[] matrixProduct(float[][] a, float[] b) {
   }
   return multiply(a, b2);
 }
+
+My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
+  float [][] transformedPoints = new float[4][8]; 
+  float[] points = new float[4][8];
+  for(int i = 0 ; i < 8 ; i++){
+      points[i][0] = box.p[i].x;
+      points[i][1] = box.p[i].y;
+      points[i][2] = box.p[i].z;
+      points[i][3] = 1;
+      transformedPoints[i][] // A terminer
+  }
+  
+  matrixProduct(transformMatrix, box.p)
+//Complete the code! You need to use the euclidian3DPoint() function given below.
+}
+
+My3DPoint euclidian3DPoint (float[] a) {
+My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
+return result;
+}
