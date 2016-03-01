@@ -31,6 +31,13 @@ float[][] rotateZMatrix(float angle) {
 
 float[][] scaleMatrix(float x, float y, float z) {
   // Complete the code!
+	 return(new float[][] {
+    {x, 0, 0, 0}, 
+    {0, y, 0, 0}, 
+    {0, 0, z, 1}, 
+    {0, 0, 0, 1}});
+}
+
 }
 
 float[][] translationMatrix(float x, float y, float z) {
