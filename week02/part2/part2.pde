@@ -35,8 +35,6 @@ float[][] scaleMatrix(float x, float y, float z) {
     {0, 0, 0, 1}});
 }
 
-}
-
 float[][] translationMatrix(float x, float y, float z) {
   return(new float[][] {
     {1, 0, 0, x}, 
@@ -46,9 +44,9 @@ float[][] translationMatrix(float x, float y, float z) {
 }
 
 float[] matrixProduct(float[][] a, float[] b) {
-  float[][] b2 = new float[b.length][1]
+  float[][] b2 = new float[b.length][1];
   for(int i = 0 ; i < b.length ; i++){
     b2[i][0] = b[i];
   }
-  return multiply(a, b2);
+  return multiply(a, b2)[0];
 }

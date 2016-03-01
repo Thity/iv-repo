@@ -162,8 +162,6 @@ float[][] scaleMatrix(float x, float y, float z) {
     {0, 0, 0, 1}});
 }
 
-}
-
 float[][] translationMatrix(float x, float y, float z) {
   return(new float[][] {
     {1, 0, 0, x}, 
@@ -173,15 +171,17 @@ float[][] translationMatrix(float x, float y, float z) {
 }
 
 float[] matrixProduct(float[][] a, float[] b) {
-  float[][] b2 = new float[b.length][1]
+  float[][] b2 = new float[b.length][1];
   for(int i = 0 ; i < b.length ; i++){
     b2[i][0] = b[i];
   }
-  return multiply(a, b2);
+  return multiply(a, b2)[0];
 }
 
 
 // A terminer
+
+/*
 My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
   float [][] transformedPoints = new float[4][8]; 
   float[] points = new float[4][8];
@@ -194,7 +194,7 @@ My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
   }
   return matrixProduct(transformMatrix, box.p)
 //Complete the code! You need to use the euclidian3DPoint() function given below.
-}
+}*/
 
 My3DPoint euclidian3DPoint (float[] a) {
 My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
