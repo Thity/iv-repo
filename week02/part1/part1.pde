@@ -91,8 +91,6 @@ class My2DBox {
     line(s[5].x, s[5].y, s[6].x, s[6].y);
     line(s[6].x, s[6].y, s[7].x, s[7].y);
     line(s[7].x, s[7].y, s[4].x, s[4].y);
-
-    // Complete the code! use only line(x1, y1, x2, y2) built-in function.
   }
 }
 
@@ -125,5 +123,4 @@ My2DBox projectBox (My3DPoint eye, My3DBox box) {
   }
   My2DBox box2D = new My2DBox(s);
   return box2D;
-  // Complete the code!
 }
