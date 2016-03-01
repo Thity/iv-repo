@@ -47,7 +47,7 @@ My2DPoint projectPoint(My3DPoint eye, My3DPoint p) {
   float [][] transformation = multiply(P, T);
   float [][] point = {{p.x}, {p.y}, {p.z}, {1}};
   float [][] perspective = multiply(transformation, point);
-  My2DPoint projected = new My2DPoint(perspective[0][0], perspective[1][0]);
+  My2DPoint projected = new My2DPoint((perspective[0][0])/(perspective[3][0]), (perspective[1][0])/(perspective[3][0]));
 
   return projected;
 }
