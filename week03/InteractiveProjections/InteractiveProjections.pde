@@ -2,25 +2,28 @@ void settings() {
   size(1000, 1000, P2D);
 }
 void setup () {
+  
 }
+
+My3DPoint eye = new My3DPoint(0, 0, -5000);
+My3DPoint origin = new My3DPoint(0, 0, 0);
+My3DBox input3DBox = transformBox(new My3DBox(origin, 100, 150, 300),translationMatrix(200, 200, 0)) ;
+
+
 void draw() {
   background(255, 255, 255);
-  My3DPoint eye = new My3DPoint(0, 0, -5000);
-  My3DPoint origin = new My3DPoint(0, 0, 0);
-
-  My3DBox input3DBox = new My3DBox(origin, 100, 150, 300);
-  //rotated around x
-  float[][] transform1 = rotateXMatrix(PI/8);
-  input3DBox = transformBox(input3DBox, transform1);
-  projectBox(eye, input3DBox).render();
-  //rotated and translated
-  float[][] transform2 = translationMatrix(200, 200, 0);
-  input3DBox = transformBox(input3DBox, transform2);
-  projectBox(eye, input3DBox).render();
-  //rotated, translated, and scaled
-  float[][] transform3 = scaleMatrix(2, 2, 2);
-  input3DBox = transformBox(input3DBox, transform3);
-  projectBox(eye, input3DBox).render();
+  ////rotated around x
+  //float[][] transform1 = rotateXMatrix(PI/8);
+  //input3DBox = transformBox(input3DBox, transform1);
+  //projectBox(eye, input3DBox).render();
+  ////rotated and translated
+  //float[][] transform2 = translationMatrix(200, 200, 0);
+  //input3DBox = transformBox(input3DBox, transform2);
+  //projectBox(eye, input3DBox).render();
+  ////rotated, translated, and scaled
+  //float[][] transform3 = scaleMatrix(2, 2, 2);
+  //input3DBox = transformBox(input3DBox, transform3);
+  //projectBox(eye, input3DBox).render();
 }
 
 class My2DPoint {
@@ -228,7 +231,8 @@ int value = 0;
 
 void mouseDragged() 
 {
-  multiply(scaleMatrix(xratio, yratio, zratio),bodyForm);
+  transformBox(input3DBox,scaleMatrix(mouseX, 1, 1));
+  projectBox(eye, input3DBox).render();
 }
 
 // Keypresses for rotating in axes
@@ -236,14 +240,17 @@ void mouseDragged()
 void keyPressed() {
   if (key == CODED) { 
     if (keyCode == UP) {
-      multiply(rotateYMatrix(angle),bodyForm);
+      input3DBox = transformBox(input3DBox,rotateXMatrix(0.1));
+      projectBox(eye, input3DBox).render();
     } else if (keyCode == DOWN) {
-      multiply(rotateYMatrix(-angle),bodyForm);
+      input3DBox = transformBox(input3DBox,rotateXMatrix(-0.1));
+      projectBox(eye, input3DBox).render();
     } else if (keyCode == LEFT) {
-      multiply(rotateXMatrix(angle),bodyForm);
+      input3DBox = transformBox(input3DBox,rotateYMatrix(0.1));
+      projectBox(eye, input3DBox).render();
     } else if (keyCode == RIGHT) {
-      multiply(rotateXMatrix(-angle),bodyForm);
+      input3DBox = transformBox(input3DBox,rotateYMatrix(-0.1));
+      projectBox(eye, input3DBox).render();
     }
-  } else {
   }
 }
