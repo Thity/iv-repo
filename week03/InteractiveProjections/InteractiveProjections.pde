@@ -215,7 +215,6 @@ My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
 My3DPoint euclidian3DPoint (float[] a) {
   My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
   return result;
-<<<<<<< HEAD:week03/InteractiveProjections/InteractiveProjections.pde
 }
 
 
@@ -230,8 +229,6 @@ int value = 0;
 void mouseDragged() 
 {
   multiply(scaleMatrix(xratio, yratio, zratio),bodyForm);
-=======
->>>>>>> 37f2b53b8f36842721253eb3319b183d1cf8b244:week03/InteractiveProjections.pde
 }
 
 // Keypresses for rotating in axes
