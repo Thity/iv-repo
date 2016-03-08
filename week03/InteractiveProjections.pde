@@ -6,7 +6,7 @@ void setup() {
 void draw() {
   My3DPoint eye = new My3DPoint(-100, -100, -5000);
   My3DPoint origin = new My3DPoint(0, 0, 0); //The first vertex of your cuboid 
-  My3DBox input3DBox = new My3DBox(origin, 100,150,300);
+  My3DBox input3DBox = new My3DBox(origin, 100, 150, 300);
   projectBox(eye, input3DBox).render();
 }
 
@@ -172,7 +172,7 @@ float[][] translationMatrix(float x, float y, float z) {
 
 float[] matrixProduct(float[][] a, float[] b) {
   float[][] b2 = new float[b.length][1];
-  for(int i = 0 ; i < b.length ; i++){
+  for (int i = 0; i < b.length; i++) {
     b2[i][0] = b[i];
   }
   return multiply(a, b2)[0];
@@ -185,18 +185,49 @@ float[] matrixProduct(float[][] a, float[] b) {
 My3DBox transformBox(My3DBox box, float[][] transformMatrix) {
   float [][] transformedPoints = new float[4][8]; 
   float[] points = new float[4][8];
-  for(int i = 0 ; i < 8 ; i++){
-      points[i][0] = box.p[i].x;
-      points[i][1] = box.p[i].y;
-      points[i][2] = box.p[i].z;
-      points[i][3] = 1;
-      transformedPoints[i][];
+  for (int i = 0; i < 8; i++) {
+    points[i][0] = box.p[i].x;
+    points[i][1] = box.p[i].y;
+    points[i][2] = box.p[i].z;
+    points[i][3] = 1;
+    transformedPoints[i][];
   }
   return matrixProduct(transformMatrix, box.p)
-//Complete the code! You need to use the euclidian3DPoint() function given below.
+    //Complete the code! You need to use the euclidian3DPoint() function given below.
 }
 
 My3DPoint euclidian3DPoint (float[] a) {
-My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
-return result;
+  My3DPoint result = new My3DPoint(a[0]/a[3], a[1]/a[3], a[2]/a[3]);
+  return result;
+}
+
+
+
+// Week03
+
+// Drag (click and hold) your mouse across the 
+// image to change the value of the rectangle
+
+int value = 0;
+
+void mouseDragged() 
+{
+  scaleMatrix();
+}
+
+// Keypresses for rotating in axes
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+      rotateYMatrix();
+    } else if (keyCode == DOWN) {
+      rotateYMatrix();
+    } else if (keyCode == LEFT) {
+      rotateXMatrix();
+    } else if (keyCode == RIGHT) {
+      rotateXMatrix();
+    }
+  } else {
+  }
 }
