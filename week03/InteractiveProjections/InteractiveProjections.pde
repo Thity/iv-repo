@@ -212,21 +212,21 @@ int value = 0;
 
 void mouseDragged() 
 {
-  scaleMatrix();
+  multiply(scaleMatrix(xratio, yratio, zratio),bodyForm);
 }
 
 // Keypresses for rotating in axes
 
 void keyPressed() {
-  if (key == CODED) {
+  if (key == CODED) { 
     if (keyCode == UP) {
-      rotateYMatrix();
+      multiply(rotateYMatrix(angle),bodyForm);
     } else if (keyCode == DOWN) {
-      rotateYMatrix();
+      multiply(rotateYMatrix(-angle),bodyForm);
     } else if (keyCode == LEFT) {
-      rotateXMatrix();
+      multiply(rotateXMatrix(angle),bodyForm);
     } else if (keyCode == RIGHT) {
-      rotateXMatrix();
+      multiply(rotateXMatrix(-angle),bodyForm);
     }
   } else {
   }
