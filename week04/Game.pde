@@ -3,29 +3,34 @@ float rx = 0;
 float rz = 0;
 float speed = 1;
 
+Mover mover;
+
 void settings() {
   size(500, 500, P3D);
 }
 
 void setup() {
+  mover = new Mover();
   noStroke();
 }
 
 void draw() {
-  directionalLight(50, 100, 125, 0, 1, 0);
+  directionalLight(50, 100, 125, 0, 1, -1);
   ambientLight(102, 102, 102);
   background(200);
   translate(width/2, height/2, 0);
-  //ellipse(0, -31.5, 48, 48);
   
   rotateX(rx);
   rotateZ(rz);
   pushMatrix();
   box(300, 15, 300);
-  popMatrix();
-  
   translate(0, -31.5, 0);
   sphere(24);
+  popMatrix();
+  
+  mover.update();
+  mover.checkEdges();
+  mover.display();
  }
  
 void mouseDragged(){

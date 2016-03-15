@@ -5,8 +5,8 @@ class Mover {
   float gravityConstant = 1;
   
   Mover() {
-    location = new PVector(width/2, height/2);
-    velocity = new PVector(1, 1);
+    location = new PVector(0, -31.5, 0);
+    velocity = new PVector(0, 0, 0);
     gravityForce = new PVector(sin(rz) * gravityConstant, sin(rx) * gravityConstant);
   }
   void update() {
