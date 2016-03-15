@@ -2,7 +2,7 @@ class Mover {
   PVector location;
   PVector velocity;
   PVector gravityForce;
-  float gravityConstant = 0.1;
+  float gravityConstant = 1;
   
   Mover() {
     location = new PVector(width/2, height/2);
@@ -11,8 +11,7 @@ class Mover {
     gravityForce.z = sin(rx) * gravityConstant;
   }
   void update() {
-    velocity.x.add(gravityForce.x);
-    velocity.y.add(gravityForce.y);
+    velocity.add(gravityForce);
     location.add(velocity);
   }
   void display() {
