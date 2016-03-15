@@ -1,11 +1,24 @@
+float depth = 2000;
+float rx = 0;
+float rz = 0;
+float speed = 1;
+    void settings() {
+      size(500, 500, P3D);
+}
+    void setup() {
+      noStroke();
+}
+
+void draw() {
+  directionalLight(50, 100, 125, 0, -1, 0);
+  ambientLight(102, 102, 102);
+  background(200);
+  translate(width/2, height/2, 0);
   
- // float rx = map(-mouseY*speed, 0, width, PI/3, PI);
-  //float rz = map(mouseX*speed, 0, height, -PI/3, PI/3);
-//  mouseDragged();
   rotateX(rx);
   rotateZ(rz);
   pushMatrix();
-    box(300, 15, 300);
+  box(300, 15, 300);
   popMatrix();
  }
  
