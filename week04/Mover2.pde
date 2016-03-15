@@ -7,16 +7,13 @@ class Mover {
   Mover() {
     location = new PVector(width/2, height/2);
     velocity = new PVector(1, 1);
-    gravityForce.x = sin(rz) * gravityConstant;
-    gravityForce.z = sin(rx) * gravityConstant;
+    gravityForce = new PVector(sin(rz) * gravityConstant, sin(rx) * gravityConstant);
   }
   void update() {
     velocity.add(gravityForce);
     location.add(velocity);
   }
   void display() {
-    stroke(0);
-    strokeWeight(2);
     fill(127);
   }
   void checkEdges() {
