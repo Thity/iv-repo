@@ -10,9 +10,6 @@ class Mover {
   private float radiusBall;
   
   
-  
- // float gravityConstant = 1;
-  
   Mover(float xMin, float xMax, float yMin, float yMax, float radiusBall) {
     this.location = new PVector(0, 0);
     this.velocity = new PVector(0, 0);
@@ -23,24 +20,9 @@ class Mover {
     this.yMin = yMin;
     this.yMax = yMax;
     this.radiusBall = radiusBall;
-    
   }
   
-  
-  /*  location = new PVector(width/2, height/2);
-    velocity = new PVector(1, 1);
-    gravityForce = new PVector(sin(rz) * gravityConstant, sin(rx) * gravityConstant);
-   
-    float normalForce = 1;
-    float mu = 0.01;
-    float frictionMagnitude = normalForce * mu;
-    PVector friction = velocity.get();
-    friction.mult(-1);
-    friction.normalize();
-    friction.mult(frictionMagnitude);
-    */
-    
-  
+  // set the gravity to the down, the velocity and the location
   void update(float rX, float rZ) {
     gravity.x = sin(rz)*0.1;
     gravity.y = sin(rx)*0.1;
@@ -56,19 +38,19 @@ class Mover {
     float frictionMagnitude = normalForce * mu;
     PVector friction = velocity.get();
     
-    
     friction.mult(-1);
     friction.normalize();
     friction.mult(frictionMagnitude);
     return friction;
- 
   }
+  
+  
   void display() {
-    stroke(0);
-    strokeWeight(2);
-    fill(200);
+    fill(255);
     sphere(radiusBall);
   }
+  
+  // bounce if the ball hit the edges of the box
   void checkEdges() {
     if (location.x >= xMax) {
       velocity.x *= -0.55;
