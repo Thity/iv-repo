@@ -1,3 +1,12 @@
+/**
+* @file Game.pde
+* @brief Game with a pad and a ball
+*
+* @authors Pere Adell  
+*          Thierry Bossy
+*          Rafael Pizzarro
+* @date 29.03.2016
+*/
 
 void settings() {
   size(700, 700, P3D);

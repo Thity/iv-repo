@@ -1,3 +1,13 @@
+/**
+* @file Mover.pde
+* @brief Mover for the ball of the game
+*
+* @authors Pere Adell  
+*          Thierry Bossy
+*          Rafael Pizzarro
+* @date 30.03.2016
+*/
+
 class Mover {
   private PVector location;
   private PVector velocity;
