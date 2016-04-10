@@ -17,8 +17,8 @@ void setup() {}
 
 void draw(){
   My3DPoint eye = new My3DPoint(0, 0, -500);
-My3DPoint origin = new My3DPoint(0, 0, 0);
-My3DBox input3DBox = new My3DBox(origin, 80, 80, 80);
+  My3DPoint origin = new My3DPoint(0, 0, 0);
+  My3DBox input3DBox = new My3DBox(origin, 80, 80, 80);
   background(255);
   
   
@@ -29,10 +29,14 @@ My3DBox input3DBox = new My3DBox(origin, 80, 80, 80);
   /* Rotation around the y-axis */
   float[][] t2 = rotateYMatrix(ry);
   input3DBox = transformBox(input3DBox, t2);
-  
-  /* Translation to the center of the window */
-  float[][] t3 = translationMatrix((width - 80) / 2, (height - 80) / 2, 0);
+
+  /* Scale */
+  float[][] t3 = scaleMatrix(scale,scale,scale);
   input3DBox = transformBox(input3DBox, t3);
+
+  /* Translation to the center of the window */
+  float[][] t4 = translationMatrix((width - 80) / 2, (height - 80) / 2, 0);
+  input3DBox = transformBox(input3DBox, t4);
   projectBox(eye, input3DBox).render();
 }
 
@@ -42,6 +46,10 @@ My3DBox input3DBox = new My3DBox(origin, 80, 80, 80);
 float rx = 0;
 float ry = 0;
 
+/**
+* Scaling factor.
+*/
+float scale = 1.0;
 
 /**
 * Translated a 3D-Point p into the eye's reference frame
@@ -234,8 +242,11 @@ class My3DBox {
 
 void mouseDragged() 
 {
-  //transformBox(input3DBox,scaleMatrix(mouseX, 1, 1));
- // projectBox(eye, input3DBox).render();
+  if((pmouseX - mouseX) + (pmouseY - mouseY) >= 0)
+    scale *= 1.1; 
+  else {
+    scale *= 0.9;
+  }
 }
 
 /**
