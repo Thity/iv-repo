@@ -77,8 +77,8 @@ void draw() {
     translate(ball.location.x, -ballOffset, -ball.location.y);
     ball.display();
     if (mouseClick) {
-      if ((mouseX-width/2) > -boxX/2 && (mouseX-width/2) < boxX/2 &&
-          (mouseY-height/2) > -boxZ/2 && (mouseY-height/2) < boxZ/2)
+      if ((mouseX-width/2) > -boxX/2 + cylinderBaseSize && (mouseX-width/2) < boxX/2 - cylinderBaseSize &&
+          (mouseY-height/2) > -boxZ/2 + cylinderBaseSize && (mouseY-height/2) < boxZ/2 - cylinderBaseSize)
         cylinders.add(new PVector(mouseX-width/2, -(mouseY-height/2)));
       mouseClick = false;
     }
