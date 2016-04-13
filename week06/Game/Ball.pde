@@ -1,6 +1,6 @@
 /**
-* @file Mover.pde
-* @brief Mover for the ball of the game
+* @file Ball.pde
+* @brief Ball class
 *
 * @authors Pere Adell  
 *          Thierry Bossy
@@ -8,13 +8,7 @@
 * @date 30.03.2016
 */
 
-// The ball on the box
-private Mover ball = new Mover(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall);
-private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
-private final static float smooth = 0.01;
-
-
-class Mover {
+class Ball {
   private PVector location;
   private PVector velocity;
   private PVector gravity;
@@ -25,7 +19,7 @@ class Mover {
   private float yMax;
   private float radiusBall;
   
-  Mover(float xMin, float xMax, float yMin, float yMax, float radiusBall) {
+  Ball(float xMin, float xMax, float yMin, float yMax, float radiusBall) {
     this.location = new PVector(0, 0);
     this.velocity = new PVector(0, 0);
     this.gravity = new PVector(0, 0);

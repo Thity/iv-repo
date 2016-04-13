@@ -1,7 +1,7 @@
 // The dimensions of the cylinders.
-float cylinderBaseSize = 25;
-float cylinderHeight = 40;
-int cylinderResolution = 40;
+private final float cylinderBaseSize = 25;
+private final float cylinderHeight = 40;
+private final int cylinderResolution = 40;
 PShape openCylinder = new PShape();
 PShape closingCircleBottom = new PShape();
 PShape closingCircleTop = new PShape();
@@ -10,7 +10,6 @@ public ArrayList<PVector> cylinders = new ArrayList<PVector>(); /* Stores the
                                                                  * each cylinder.
                                                                  */
                                                                  
-
 // Draws all the cylinder shapes using the positions stored in the cylinder array.
 void drawCylinders() {
   for(PVector c : cylinders){
@@ -24,9 +23,8 @@ void drawCylinders() {
   }
 }
 
-
 /* Creation of the shape of a closed cylinder. */
-void createCylinder(){
+void createCylinderShapes(){
   float angle;
   float[] x = new float[cylinderResolution + 1];
   float[] y = new float[cylinderResolution + 1];

@@ -1,15 +1,15 @@
-PGraphics backgroundData;
-PGraphics topView;
+PGraphics guiBackground;
+PGraphics guiTopView;
 
-void drawBackgroundData() {
-  backgroundData.beginDraw();
-  backgroundData.background(0);
-  backgroundData.endDraw();
+void guiBackground() {
+  guiBackground.beginDraw();
+  guiBackground.background(200, 225, 150);
+  guiBackground.endDraw();
 }
-void drawTopView() {
-  topView.beginDraw();
-  topView.background(255);
-  topView.endDraw();
+void guiTopView() {
+  guiTopView.beginDraw();
+  guiTopView.background(255);
+  guiTopView.endDraw();
 }
 // Draws all the cylinder shapes using the positions stored in the cylinder array.
 void drawCylindersTopView() {
