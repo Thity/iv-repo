@@ -24,7 +24,7 @@ private final static float boxZ = 400;
 // Classes
 
 private Gui gui = new Gui();
-private Inputs input = new Inputs();
+//private Inputs input = new Inputs();
 
 void setup() {
   noStroke();
@@ -50,7 +50,7 @@ void draw() {
 
   
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
-  if (!input.getShift()) {
+  if (!shift) {
     pushMatrix();
     translate(width/2, height/2, 0);
     rotateX(rx);
@@ -69,12 +69,14 @@ void draw() {
     drawCylinders();
     translate(ball.location.x, -ballOffset, -ball.location.y);
     ball.display();
-    if (input.getMouseClick()) {
+    //if (input.getMouseClick()) {
+      if (mouseClick) {
       if ((mouseX-width/2) > -boxX/2 + cylinderBaseSize && (mouseX-width/2) < boxX/2 - cylinderBaseSize &&
           (mouseY-height/2) > -boxZ/2 + cylinderBaseSize && (mouseY-height/2) < boxZ/2 - cylinderBaseSize){
         cylinders.add(new PVector(mouseX-width/2, -(mouseY-height/2)));
         }
-      input.setMouseClick(false);
+      //input.setMouseClick(false);
+      mouseClick = false;
     }
   }
   popMatrix();
@@ -83,11 +85,13 @@ void draw() {
   text("X rotation =" + Math.round(Math.toDegrees(rx) * 100.0) / 100.0, 20, 20);
   text("Z rotation =" + Math.round(Math.toDegrees(rz) * 100.0) / 100.0, 20, 40);
   text("Speed = " + Math.round(speed * 100.0) / 100.0, 20, 60);
-  text("SHIFT = " + input.getShift(), 20, 80);  
+  //text("SHIFT = " + input.getShift(), 20, 80);
+  text("SHIFT = " + shift, 20, 80);
 }
+
 //inputs 
-void mouseDragged(){ input.mouseDragged();}
-void mouseWheel(MouseEvent event){ input.mouseWheel(event);}
-void mousePressed(){ input.mousePressed();}
-void keyPressed(){ input.keyPressed();}   
-void keyReleased(){ input.keyReleased();}
+//void mouseDragged(){ input.mouseDragged();}
+//void mouseWheel(MouseEvent event){ input.mouseWheel(event);}
+//void mousePressed(){ input.mousePressed();}
+//void keyPressed(){ input.keyPressed();}   
+//void keyReleased(){ input.keyReleased();}
