@@ -83,7 +83,7 @@ void draw() {
   text("X rotation =" + Math.round(Math.toDegrees(rx) * 100.0) / 100.0, 20, 20);
   text("Z rotation =" + Math.round(Math.toDegrees(rz) * 100.0) / 100.0, 20, 40);
   text("Speed = " + Math.round(speed * 100.0) / 100.0, 20, 60);
-  text("SHIFT" + input.getShift(), 20, 80);  
+  text("SHIFT = " + input.getShift(), 20, 80);  
 }
 //inputs 
 void mouseDragged(){ input.mouseDragged();}

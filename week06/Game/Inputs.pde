@@ -61,6 +61,6 @@ class Inputs {
     return mouseClick;
   }
   public void setShift(boolean Boole){
-    mouseClick = Boole;
+    shift = Boole;
   }
 }
