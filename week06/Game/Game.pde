@@ -22,8 +22,9 @@ private final static float boxY = 15;
 private final static float boxZ = 400;
 
 // Classes
-private Gui gui = new Gui();
 
+private Gui gui = new Gui();
+private Inputs input = new Inputs();
 
 void setup() {
   noStroke();
@@ -68,12 +69,12 @@ void draw() {
     drawCylinders();
     translate(ball.location.x, -ballOffset, -ball.location.y);
     ball.display();
-    if (mouseClick) {
+    if (input.mouseClick) {
       if ((mouseX-width/2) > -boxX/2 + cylinderBaseSize && (mouseX-width/2) < boxX/2 - cylinderBaseSize &&
           (mouseY-height/2) > -boxZ/2 + cylinderBaseSize && (mouseY-height/2) < boxZ/2 - cylinderBaseSize){
         cylinders.add(new PVector(mouseX-width/2, -(mouseY-height/2)));
         }
-      mouseClick = false;
+      input.mouseClick = false;
     }
   }
   popMatrix();
