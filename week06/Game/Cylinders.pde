@@ -2,6 +2,7 @@
 private final float cylinderBaseSize = 25;
 private final float cylinderHeight = 40;
 private final int cylinderResolution = 40;
+
 PShape openCylinder = new PShape();
 PShape closingCircleBottom = new PShape();
 PShape closingCircleTop = new PShape();
@@ -24,7 +25,7 @@ void drawCylinders() {
 }
 
 /* Creation of the shape of a closed cylinder. */
-void createCylinderShapes(){
+void setupCylinderShapes(){
   float angle;
   float[] x = new float[cylinderResolution + 1];
   float[] y = new float[cylinderResolution + 1];

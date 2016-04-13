@@ -8,6 +8,16 @@
 * @date 30.03.2016
 */
 
+// Ball va
+private final static float radiusBall = 12;
+private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
+private final static float smooth = 0.01;
+private Ball ball;
+
+void setupBall(){
+    ball = new Ball(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall);
+}
+
 class Ball {
   private PVector location;
   private PVector velocity;

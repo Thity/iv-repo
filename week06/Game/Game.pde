@@ -8,31 +8,28 @@
 * @date 29.03.2016
 */
 
-// General constants
-final int WINDOW_WIDTH = 1100;
-final int WINDOW_HEIGHT = 700;
-
-// The dimensions of the box.
-private final static float boxX = 400;
-private final static float boxY = 15;
-private final static float boxZ = 400;
-
-//Ball values
-private final static float radiusBall = 12;
-private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
-private final static float smooth = 0.01;
-private Ball ball;
+// Windows
+final static int WINDOW_WIDTH = 1100;
+final static int WINDOW_HEIGHT = 700;
 
 void settings() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT, P3D);
 }
 
+// Box
+private final static float boxX = 400;
+private final static float boxY = 15;
+private final static float boxZ = 400;
+
+// Classes
+private Gui gui = new Gui();
+
+
 void setup() {
   noStroke();
-  ball = new Ball(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall);
-  createCylinderShapes();
-  guiBackground = createGraphics(680,200,P2D);
-  guiTopView = createGraphics(180,180,P2D);
+  setupBall();
+  gui.setupGui();
+  setupCylinderShapes();
 }
 
 
@@ -48,11 +45,8 @@ void draw() {
   background(255);
   fill(200);
   
-  // Gui draw
-  guiBackground();
-  image(guiBackground, 10, 490);
-  guiTopView();
-  image(guiTopView, 20, 500);
+  gui.drawGui();
+
   
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
   if (!shift) {
