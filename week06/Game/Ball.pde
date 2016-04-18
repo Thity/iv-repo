@@ -97,4 +97,6 @@ class Ball {
       }
     }
   }
+  PVector getLocation() { return location; }
+  
 }

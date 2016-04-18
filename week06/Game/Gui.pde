@@ -4,14 +4,14 @@ class Gui {
   // background
   private PGraphics background;
   private final static int backgroundHeight = 150;
-  private final static int backgroundWidth = WINDOW_WIDTH;
+  private final int backgroundWidth = WINDOW_WIDTH;
   private final static int backgroundPosX = 0;
-  private final static int backgroundPosY = WINDOW_HEIGHT - backgroundHeight;
+  private final int backgroundPosY = WINDOW_HEIGHT - backgroundHeight;
   // TopView
   private PGraphics topView;
   private final static int topViewSide = backgroundHeight - 2*margin;
-  private final static int topViewPosX = 10;
-  private final static int topViewPosY = backgroundPosY + margin;
+  private final static int topViewPosX = margin;
+  private final int topViewPosY = backgroundPosY + margin;
   // Score Board
   private PGraphics score; 
   

@@ -24,6 +24,22 @@ void drawCylinders() {
   }
 }
 
+boolean checkCylindersBox() {
+  return ((mouseX-boxCenterX) > -boxX/2 + cylinderBaseSize && 
+   (mouseX-boxCenterX) < boxX/2 - cylinderBaseSize &&
+   (mouseY-boxCenterY) > -boxZ/2 + cylinderBaseSize && 
+   (mouseY-boxCenterY) < boxZ/2 - cylinderBaseSize);
+}
+boolean checkCylinderBall(){
+ return ((mouseX-ball.getLocation().x) > -ball.getLocation().x + radiusBall && 
+   (mouseX-ball.getLocation().x) < boxX/2 - radiusBall &&
+   (mouseY-ball.getLocation().y) > -ball.getLocation().x + radiusBall && 
+   (mouseY-ball.getLocation().y) < ball.getLocation().x - radiusBall);
+}
+void addCylinder() {
+  cylinders.add(new PVector(mouseX-boxCenterX, -(mouseY-boxCenterY)));
+}
+
 /* Creation of the shape of a closed cylinder. */
 void setupCylinderShapes(){
   float angle;

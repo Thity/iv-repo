@@ -17,9 +17,11 @@ void settings() {
 }
 
 // Box
-private final static float boxX = 400;
-private final static float boxY = 15;
-private final static float boxZ = 400;
+private final static int boxX = 400;
+private final static int boxY = 15;
+private final static int boxZ = 400;
+private final static int boxCenterX = WINDOW_WIDTH/2;
+private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
 
 // Classes
 
@@ -52,7 +54,7 @@ void draw() {
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
   if (!shift) {
     pushMatrix();
-    translate(width/2, height/2, 0);
+    translate(boxCenterX, boxCenterY, 0);
     rotateX(rx);
     rotateZ(rz);
     box(boxX, boxY, boxZ);     
@@ -63,7 +65,7 @@ void draw() {
     ball.checkEdges();
   } else {
     pushMatrix();
-    translate(width/2, height/2, 0);
+    translate(boxCenterX, boxCenterY, 0);
     rotateX(-PI/2);
     box(boxX, boxY, boxZ);    
     drawCylinders();
@@ -71,9 +73,9 @@ void draw() {
     ball.display();
     //if (input.getMouseClick()) {
       if (mouseClick) {
-      if ((mouseX-width/2) > -boxX/2 + cylinderBaseSize && (mouseX-width/2) < boxX/2 - cylinderBaseSize &&
-          (mouseY-height/2) > -boxZ/2 + cylinderBaseSize && (mouseY-height/2) < boxZ/2 - cylinderBaseSize){
-        cylinders.add(new PVector(mouseX-width/2, -(mouseY-height/2)));
+          if(checkCylindersBox() && checkCylindersBall())
+            addCylinder();
+            mouseClick = false;
         }
       //input.setMouseClick(false);
       mouseClick = false;
