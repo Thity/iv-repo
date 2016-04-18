@@ -25,14 +25,16 @@ private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
 
 // Classes
 
-private Gui gui = new Gui();
+//private Gui gui = new Gui();
 //private Inputs input = new Inputs();
 
 void setup() {
   noStroke();
   setupBall();
-  gui.setupGui();
+  //gui.setupGui();
   setupCylinderShapes();
+  dashboard = new Dashboard();
+
 }
 
 
@@ -43,17 +45,18 @@ private float speed = 1;
 
 void draw() {
   //Background and Light
-  directionalLight(50, 100, 125, -1, 1, -1);
-  ambientLight(102, 102, 102);
+  //directionalLight(50, 100, 125, -1, 1, -1);
+  //ambientLight(102, 102, 102);
   background(255);
+  lights();
   fill(200);
   
-  gui.drawGui();
+ // gui.drawGui();
 
-  
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
+  pushMatrix();
+
   if (!shift) {
-    pushMatrix();
     translate(boxCenterX, boxCenterY, 0);
     rotateX(rx);
     rotateZ(rz);
@@ -64,7 +67,6 @@ void draw() {
     ball.display();
     ball.checkEdges();
   } else {
-    pushMatrix();
     translate(boxCenterX, boxCenterY, 0);
     rotateX(-PI/2);
     box(boxX, boxY, boxZ);    
@@ -75,7 +77,6 @@ void draw() {
       if (mouseClick) {
           if(checkCylindersBox() && checkCylindersBall())
             addCylinder();
-            mouseClick = false;
         }
       //input.setMouseClick(false);
       mouseClick = false;
@@ -83,12 +84,10 @@ void draw() {
   }
   popMatrix();
   
-  fill(50);
-  text("X rotation =" + Math.round(Math.toDegrees(rx) * 100.0) / 100.0, 20, 20);
-  text("Z rotation =" + Math.round(Math.toDegrees(rz) * 100.0) / 100.0, 20, 40);
-  text("Speed = " + Math.round(speed * 100.0) / 100.0, 20, 60);
-  //text("SHIFT = " + input.getShift(), 20, 80);
-  text("SHIFT = " + shift, 20, 80);
+  //fill(255, 255, 255);
+  dashboard.drawBackground();
+  dashboard.drawTopView(cylinders, cylinderBaseRadius, ballRadius, ball.location, boxX);
+  dashboard.drawTextView();
 }
 
 //inputs 

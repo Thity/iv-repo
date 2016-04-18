@@ -13,9 +13,11 @@ private final static float radiusBall = 12;
 private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
 private final static float smooth = 0.01;
 private Ball ball;
+private Dashboard dashboard;
+
 
 void setupBall(){
-    ball = new Ball(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall);
+    ball = new Ball(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall, dashboard);
 }
 
 class Ball {
@@ -29,6 +31,9 @@ class Ball {
   private float yMax;
   private float radiusBall;
   
+  private Dashboard dashboard;
+
+  
   Ball(float xMin, float xMax, float yMin, float yMax, float radiusBall) {
     this.location = new PVector(0, 0);
     this.velocity = new PVector(0, 0);
@@ -39,6 +44,9 @@ class Ball {
     this.yMin = yMin;
     this.yMax = yMax;
     this.radiusBall = radiusBall;
+    
+    this.dashboard = dashboard;
+
   }
   
   // set the gravity to the down, the velocity and the location
@@ -50,6 +58,9 @@ class Ball {
     velocity.add(friction());
     location.add(velocity);
     checkCylinderCollision();
+    
+    dashboard.setVelocity(velocity.mag());
+
   }
   
   PVector friction() {
@@ -72,20 +83,25 @@ class Ball {
   // bounce if the ball hit the edges of the box
   void checkEdges() {
     if (location.x >= xMax) {
-      velocity.x *= -0.8;
-      location.x = xMax;
-    } else if (location.x <= xMin ) {
-      velocity.x *= -0.8;
-      location.x = xMin;
+       dashboard.setScore(-velocity.mag());
+       velocity.x = velocity.x * -0.55;
+       location.x = xMax;
+    } else if (location.x <= xMin) {
+        dashboard.setScore(-velocity.mag());
+        velocity.x = velocity.x * -0.55;
+        location.x = xMin;
     }
+     
     if (location.y >= yMax) {
-      velocity.y *= -0.8;
-      location.y = yMax;
-    } else if (location.y <= yMin){
-      velocity.y *= -0.8;
-      location.y = yMin;
+        dashboard.setScore(-velocity.mag());
+         velocity.y = velocity.y * -1;
+         location.y = yMax;
+    } else if (location.y <= yMin) {
+         dashboard.setScore(-velocity.mag());
+         velocity.y = velocity.y * -1;
+         location.y = yMin;
     }
-  }
+  } 
   //////////////////////////////////
   void checkCylinderCollision() {
     for(PVector c : cylinders) {
@@ -94,6 +110,8 @@ class Ball {
         PVector n = c.copy().sub(location).normalize();
         velocity.sub(n.copy().mult(1.8 * (velocity.dot(n))));
         location = c.copy().add(n.mult(-d*1.01));
+        dashboard.setScore(velocity.mag());
+
       }
     }
   }
