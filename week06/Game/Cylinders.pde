@@ -1,15 +1,24 @@
+/**
+* @file Cylinders.pde
+* @brief All function that handle Cylinders
+*
+* @authors Pere Adell  
+*          Thierry Bossy
+*          Rafael Pizzarro
+* @date 10.04.2016
+*/
+
 // The dimensions of the cylinders.
 private final float cylinderBaseSize = 25;
 private final float cylinderHeight = 40;
 private final int cylinderResolution = 40;
+private final float cylinderBaseRadius = 20;
+
 
 PShape openCylinder = new PShape();
 PShape closingCircleBottom = new PShape();
 PShape closingCircleTop = new PShape();
-public ArrayList<PVector> cylinders = new ArrayList<PVector>(); /* Stores the
-                                                                 * position of
-                                                                 * each cylinder.
-                                                                 */
+public ArrayList<PVector> cylinders = new ArrayList<PVector>(); 
                                                                  
 // Draws all the cylinder shapes using the positions stored in the cylinder array.
 void drawCylinders() {
@@ -30,7 +39,8 @@ boolean checkCylindersBox() {
    (mouseY-boxCenterY) > -boxZ/2 + cylinderBaseSize && 
    (mouseY-boxCenterY) < boxZ/2 - cylinderBaseSize);
 }
-boolean checkCylinderBall(){
+
+boolean checkCylindersBall(){
  return ((mouseX-ball.getLocation().x) > -ball.getLocation().x + radiusBall && 
    (mouseX-ball.getLocation().x) < boxX/2 - radiusBall &&
    (mouseY-ball.getLocation().y) > -ball.getLocation().x + radiusBall && 

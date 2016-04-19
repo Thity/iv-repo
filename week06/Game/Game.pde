@@ -22,6 +22,7 @@ private final static int boxY = 15;
 private final static int boxZ = 400;
 private final static int boxCenterX = WINDOW_WIDTH/2;
 private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
+private Dashboard dashboard;
 
 // Classes
 
@@ -30,11 +31,12 @@ private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
 
 void setup() {
   noStroke();
-  setupBall();
-  //gui.setupGui();
+  ball = new Mover(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall, dashboard);
+
+//  setupBall();
+//gui = new Gui();
   setupCylinderShapes();
   dashboard = new Dashboard();
-
 }
 
 
@@ -81,12 +83,11 @@ void draw() {
       //input.setMouseClick(false);
       mouseClick = false;
     }
-  }
   popMatrix();
   
   //fill(255, 255, 255);
   dashboard.drawBackground();
-  dashboard.drawTopView(cylinders, cylinderBaseRadius, ballRadius, ball.location, boxX);
+  dashboard.drawTopView(cylinders, cylinderBaseRadius,radiusBall, ball.location, boxX);
   dashboard.drawTextView();
 }
 
