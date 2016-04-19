@@ -26,8 +26,6 @@ private Dashboard dashboard;
 
 // Classes
 
-//private Gui gui = new Gui();
-//private Inputs input = new Inputs();
 
 void setup() {
   noStroke();
@@ -43,15 +41,10 @@ private float rz = 0;
 private float speed = 1;
 
 void draw() {
-  //Background and Light
-  //directionalLight(50, 100, 125, -1, 1, -1);
-  //ambientLight(102, 102, 102);
   background(255);
   lights();
   fill(200);
   
- // gui.drawGui();
-
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
 
   if (!shift) {
@@ -84,7 +77,7 @@ void draw() {
     }
   popMatrix();
   
-  //fill(255, 255, 255);
+  fill(255, 255, 255);
   dashboard.drawBackground();
   dashboard.drawTopView(cylinders, cylinderBaseRadius,radiusBall, ball.location, boxX);
   dashboard.drawTextView();
