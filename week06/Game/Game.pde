@@ -31,12 +31,9 @@ private Dashboard dashboard;
 
 void setup() {
   noStroke();
-  ball = new Mover(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall, dashboard);
-
-//  setupBall();
-//gui = new Gui();
   setupCylinderShapes();
   dashboard = new Dashboard();
+  ball = new Mover(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall, dashboard);
 }
 
 
@@ -56,9 +53,10 @@ void draw() {
  // gui.drawGui();
 
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
-  pushMatrix();
 
   if (!shift) {
+    pushMatrix();
+
     translate(boxCenterX, boxCenterY, 0);
     rotateX(rx);
     rotateZ(rz);
@@ -69,6 +67,7 @@ void draw() {
     ball.display();
     ball.checkEdges();
   } else {
+    pushMatrix();
     translate(boxCenterX, boxCenterY, 0);
     rotateX(-PI/2);
     box(boxX, boxY, boxZ);    

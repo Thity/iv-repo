@@ -23,7 +23,7 @@
     this.velocity = 0;
     this.lastScore = 0;
     
-    this.font = createFont("Helvetica", 14);
+    this.font = createFont("Helvetica", 10);
   }
   
   public void drawBackground() {
@@ -87,7 +87,7 @@ class Dashboard {
   private final static int margin = 10;
   // background
   private final PGraphics background;
-  private final static int BG_HEIGHT = 150;
+  private final static int BG_HEIGHT = 180;
   private final static int BG_WIDTH = WINDOW_WIDTH;
   private final static int BG_PosX = 0;
   private final static int BG_PosY = WINDOW_HEIGHT - BG_HEIGHT;
@@ -99,14 +99,14 @@ class Dashboard {
   // Score Board
   private final PGraphics textView; 
   private final static int TextV_Side = BG_HEIGHT - 2*margin;
-  private final static int TextV_PosX = TopV_PosX + 2*margin;
+  private final static int TextV_PosX = TopV_PosX + TopV_Side + 2*margin;
   private final static int TextV_PosY = BG_PosY + margin;
   
   private float totalScore;
   private float velocity;
   private float lastScore;
   
-  private PFont font = createFont("Helvetica", 14);
+  private PFont font = createFont("Helvetica", 10);
   
   private void drawBackground() {
     background.beginDraw();
