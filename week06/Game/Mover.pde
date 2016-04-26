@@ -1,10 +1,10 @@
 /**
-  @Project ADRESTIA; CS211 - Introduction to Visual Computing
   @File Mover.pde
-  @Authors Roman Bachmann
-           Michael Allemann
-           Andrea Caforio
 */
+private final static float radiusBall = 12;
+private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
+private final static float smooth = 0.01;
+private Mover ball;
 
 class Mover {
   private PVector location;
@@ -112,5 +112,4 @@ class Mover {
     }
   }
   public PVector getLocation() { return location; }
-
 }

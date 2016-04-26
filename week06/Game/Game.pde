@@ -1,12 +1,12 @@
 /**
-* @file Game.pde
-* @brief Game with a pad and a ball
-*
-* @authors Pere Adell  
-*          Thierry Bossy
-*          Rafael Pizzarro
-* @date 29.03.2016
-*/
+ * @file Game.pde
+ * @brief Game with a pad and a ball
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 29.03.2016
+ */
 
 // Windows
 final static int WINDOW_WIDTH = 1100;
@@ -23,6 +23,7 @@ private final static int boxZ = 400;
 private final static int boxCenterX = WINDOW_WIDTH/2;
 private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
 private Dashboard dashboard;
+//Mouse
 
 // Classes
 
@@ -31,7 +32,7 @@ void setup() {
   noStroke();
   setupCylinderShapes();
   dashboard = new Dashboard();
-  ball = new Mover(-1 * boxX / 2, boxX / 2, -1 * boxZ / 2, boxZ / 2, radiusBall, dashboard);
+  ball = new Mover(-boxX / 2, boxX / 2, -boxZ / 2, boxZ / 2, radiusBall, dashboard);
 }
 
 
@@ -44,7 +45,7 @@ void draw() {
   background(255);
   lights();
   fill(200);
-  
+
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
 
   if (!shift) {
@@ -59,6 +60,7 @@ void draw() {
     ball.update(rx, rz);
     ball.display();
     ball.checkEdges();
+    
   } else {
     pushMatrix();
     translate(boxCenterX, boxCenterY, 0);
@@ -67,19 +69,17 @@ void draw() {
     drawCylinders();
     translate(ball.location.x, -ballOffset, -ball.location.y);
     ball.display();
-    //if (input.getMouseClick()) {
-      if (mouseClick) {
-          if(checkCylindersBox() && checkCylindersBall())
-            addCylinder();
-        }
-      //input.setMouseClick(false);
-      mouseClick = false;
+    if (mouseClick) {
+      if (checkCylindersBox() && checkCylindersBall() && checkCylindersCylinders())
+        addCylinder();
     }
+    mouseClick = false;
+  }
   popMatrix();
-  
+
   fill(255, 255, 255);
   dashboard.drawBackground();
-  dashboard.drawTopView(cylinders, cylinderBaseRadius,radiusBall, ball.location, boxX);
+  dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
   dashboard.drawTextView();
 }
 
