@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+import java.util.Timer;
 class Dashboard {
   // Gui values
   private final static int margin = 10;
@@ -22,15 +24,39 @@ class Dashboard {
   private final static int positionView_Side = BG_HEIGHT - 2*margin;
   private final static int positionView_PosX = TextV_PosX + TextV_Side + margin;
   private final static int positionView_PosY = BG_PosY + margin;
-  
+  // Score
+  private final float minNewScore = 0.2;
+  private int scorePosX = width/4 + margin;
+  private int scorePosY = margin;
+  private float scoreLastTimeInterval = 0;
+  private float lastScore = 0;
+  private float totalScore= 0;
+  ArrayList<Float> scores = new ArrayList<Float>();
+  private final PGraphics scoreView;
+  private final color red = color(255, 0, 0); // Color for negative scores
+  private final color green = color(0, 255, 0); // Color for positive scores
+  // Bar Chart
+  private final color barChartColor = color(230, 230, 200);
+  private final PGraphics barChart = createGraphics(width/2 - 2*margin, height/4 - 2*margin, P2D);
+  private final int barChartPosX = width/2 + margin;
+  private final static int barChartPosY = margin;
+  // Scroll Board
+  private final int scrollBarLength = width / 2 - 4 * margin; // For scroll length
+  private final HScrollbar hs;
+  // Timer
+  Timer timer;
+  private int lastTimeInterval = 0;
+  private final int timeInterval = 1000;
+
   private PVector mouse;
-  
-  private float totalScore;
+
   private float velocity;
-  private float lastScore;
-  
-  private PFont font = createFont("Helvetica", 10);
-  
+  DecimalFormat numberFormat = numberFormat = new DecimalFormat ("0.000");
+  private final static int textSize = 10;
+  private PFont font = createFont("Helvetica", textSize);
+
+
+
   private void drawBackground() {
     background.beginDraw();
     background.fill(230, 226, 175);
@@ -39,76 +65,168 @@ class Dashboard {
     background.endDraw();
     image(background, BG_PosX, BG_PosY);
   }
-  
-  private void drawTopView(ArrayList<PVector> cylinders, float cylinderRadius,
-                         float ballRadius, PVector ball, float boxSide) {
-   topView.beginDraw();
-   topView.background(6, 100, 130);
-   topView.noStroke();
-   topView.fill(255, 0, 0);
-   topView.ellipse(map(ball.x, 0, boxSide, 0, TopV_Side) + TopV_Side / 2,
-                   -map(ball.y, 0, boxSide, 0, TopV_Side) + TopV_Side / 2,
-                   map(ballRadius, 0, boxSide, 0, TopV_Side) * 2,
-                   map(ballRadius, 0, boxSide, 0, TopV_Side) * 2);
-   topView.fill(230, 226, 175);
-   for (int i = 0; i < cylinders.size(); i++) {
-     topView.ellipse(map(cylinders.get(i).x, 0, boxSide, 0, TopV_Side) + TopV_Side / 2,
-                     -map(cylinders.get(i).y , 0, boxSide, 0, TopV_Side) + TopV_Side / 2,
-                     map(cylinderRadius, 0, boxSide, 0, TopV_Side) * 2,
-                     map(cylinderRadius, 0, boxSide, 0, TopV_Side) * 2); 
-   }
-   topView.endDraw();
-   image(topView, TopV_PosX, TopV_PosY);
 
+  private void drawTopView(ArrayList<PVector> cylinders, float cylinderRadius, 
+    float ballRadius, PVector ball, float boxSide) {
+    topView.beginDraw();
+    topView.background(6, 100, 130);
+    topView.noStroke();
+    topView.fill(255, 0, 0);
+    topView.ellipse(map(ball.x, 0, boxSide, 0, TopV_Side) + TopV_Side / 2, 
+      -map(ball.y, 0, boxSide, 0, TopV_Side) + TopV_Side / 2, 
+      map(ballRadius, 0, boxSide, 0, TopV_Side) * 2, 
+      map(ballRadius, 0, boxSide, 0, TopV_Side) * 2);
+    topView.fill(230, 226, 175);
+    for (int i = 0; i < cylinders.size(); i++) {
+      topView.ellipse(map(cylinders.get(i).x, 0, boxSide, 0, TopV_Side) + TopV_Side / 2, 
+        -map(cylinders.get(i).y, 0, boxSide, 0, TopV_Side) + TopV_Side / 2, 
+        map(cylinderRadius, 0, boxSide, 0, TopV_Side) * 2, 
+        map(cylinderRadius, 0, boxSide, 0, TopV_Side) * 2);
+    }
+    topView.endDraw();
+    image(topView, TopV_PosX, TopV_PosY);
   }
-  
+
   private void drawTextView() {
-   textView.beginDraw();
-   textView.noStroke();
-   textView.background(255);
-   textView.fill(230, 226, 175);
-   textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
-   textView.fill(0);
-   textView.textFont(font);
-   //mouse = new PVector (mouseX-boxCenterX, mouseY-boxCenterY);
-   textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + velocity + "\n\nLast Score:\n" + lastScore, 30, 30);
-   //textView.text("Position Mouse X:" + mouse.x + "\nPosition Mouse Y:\n" + mouse.y + "\n\nBall X:\n" + ball.getLocation().x + "\nBall Y : " + ball.getLocation().y, 30, 30);
+    hs.update();
+    textView.beginDraw();
+    textView.noStroke();
+    textView.background(255);
+    textView.fill(230, 226, 175);
+    textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
+    textView.fill(0);
+    textView.textFont(font);
+    //mouse = new PVector (mouseX-boxCenterX, mouseY-boxCenterY);
+    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + velocity + "\n\nLast Score:\n" + lastScore, 30, 30);
+    //textView.text("Position Mouse X:" + mouse.x + "\nPosition Mouse Y:\n" + mouse.y + "\n\nBall X:\n" + ball.getLocation().x + "\nBall Y : " + ball.getLocation().y, 30, 30);
 
-   textView.endDraw();
-   image(textView, TextV_PosX, TextV_PosY);
+    textView.endDraw();
+    image(textView, TextV_PosX, TextV_PosY);
   }
-  
+
   private void drawPositionView() {
-   positionView.beginDraw();
-   positionView.noStroke();
-   positionView.background(255);
-   positionView.fill(230, 226, 175);
-   positionView.rect(3, 3, positionView_Side - 6, positionView_Side - 6);
-   positionView.fill(0);
-   positionView.textFont(font);
-   positionView.endDraw();
-   image(positionView, positionView_PosX, positionView_PosY);
+    positionView.beginDraw();
+    positionView.noStroke();
+    positionView.background(255);
+    positionView.fill(230, 226, 175);
+    positionView.rect(3, 3, positionView_Side - 6, positionView_Side - 6);
+    positionView.fill(0);
+    positionView.textFont(font);
+    positionView.endDraw();
+    image(positionView, positionView_PosX, positionView_PosY);
   }
-  
+
   public void drawGui() {
     drawBackground();
     drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
     drawTextView();
     drawPositionView();
   }
-  
+
   public void setScore(float score) {
     totalScore += score;
     lastScore = score;
   }
-  
+
   public void setVelocity(float v) {
     velocity = v;
   }
+
+  void drawScore(){
+    pushStyle();
+      textSize(textSize);
+      pushMatrix();
+        translate(scorePosX + margin, scorePosY + textSize + margin);
+        scoreView.beginDraw();
+          scoreView.background(255, 255, 255, 100);
+          
+          fill(0);
+          text("Total score : " + numberFormat.format(totalScore) 
+            + "\n\nVelocity :     " + numberFormat.format(velocity) 
+            + "\n\nLast score :  " + numberFormat.format(lastScore), 0, 0);
+        scoreView.endDraw();
+      popMatrix();
+    popStyle();
+  }
+
+  void drawBarChart() {
+    hs.update();
+    float chartLength = width/2 - 4*margin;
+    int nbToShow = 10 + (int)(90 * ((exp(hs.getPos()) - 1) / exp(1)));
+    int recHeight = 5;
+    float recLength = chartLength / nbToShow;
+    int heightBegin = height/4 - 6*margin;
+    pushStyle();
+    barChart.beginDraw();
+    barChart.background(barChartColor);
+    int beginIndex = max(0, scores.size() - nbToShow);
+    for (int i=beginIndex; i < scores.size(); i++) {
+      int h = 1 + (int)log(1. + 1000. * abs(scores.get(i))); // Logarithmic scale to show the differences
+      if (scores.get(i) >= 0.)
+        barChart.fill(green);
+      else
+        barChart.fill(red);
+      for (int j=0; j<h; j++) {
+        barChart.rect(margin + ((i - beginIndex) * recLength), heightBegin - (j*recHeight), recLength, -recHeight);
+      }
+    }
+
+
+    barChart.endDraw();
+    popStyle();
+  }
   
-  public Dashboard(){
-    background = createGraphics(BG_WIDTH, BG_HEIGHT,P2D);
-    topView = createGraphics(TopV_Side, TopV_Side,P2D);
+  void updateScroll() {
+    pushStyle();
+    hs.update();
+    hs.display();
+    popStyle();
+  }
+  void pauseScore(){
+    timer.pause();
+  }
+  
+  void runScore(){
+    timer.run();
+  }
+  void updateScoreStatistics(float newScore){
+    if (timer.getElapsed()/timeInterval > lastTimeInterval){
+      scores.add(scoreLastTimeInterval);
+      lastTimeInterval++;
+      scoreLastTimeInterval = 0.;
+    }
+    if (abs(newScore) > minNewScore){
+      lastScore = newScore;
+      totalScore += lastScore;
+      scoreLastTimeInterval += newScore;
+    }
+  }
+
+void drawAll(){
+  
+    dashboard.drawBackground();
+    dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
+    dashboard.drawTextView();
+    dashboard.updateScroll();
+  
+    drawScore();
+    //drawTopView(mover, cylinders);
+    drawBarChart();
+    
+    //image(background, 0, 0);
+    //image(scoreView, scorePosX, scorePosY);
+    //image(topView, TopV_PosX, TopV_PosY);
+    //image(barChart, barChartPosX, barChartPosY);
+  }
+  
+  public Dashboard() {
+  
+    timer = new Timer();
+    hs = new HScrollbar((3*width)/4 - scrollBarLength/2, height - 4 * margin, scrollBarLength, 20);
+    
+    scoreView = createGraphics(width/4 - 2*margin, height/4 - 2*margin, P2D);
+    background = createGraphics(BG_WIDTH, BG_HEIGHT, P2D);
+    topView = createGraphics(TopV_Side, TopV_Side, P2D);
     textView = createGraphics(TextV_Side, TopV_Side, P2D);
     positionView = createGraphics(positionView_Side, positionView_Side);
     totalScore=0;

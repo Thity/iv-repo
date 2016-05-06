@@ -23,6 +23,8 @@ private final static int boxZ = 400;
 private final static int boxCenterX = WINDOW_WIDTH/2;
 private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
 private Dashboard dashboard;
+
+
 //Mouse
 
 // Classes
@@ -78,9 +80,13 @@ void draw() {
   popMatrix();
 
   fill(255, 255, 255);
+  dashboard.drawAll();
+  /*
   dashboard.drawBackground();
   dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
   dashboard.drawTextView();
+  dashboard.updateScroll();
+  */
 }
 
 //inputs 
