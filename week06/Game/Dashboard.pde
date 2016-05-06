@@ -24,25 +24,28 @@ class Dashboard {
   private final static int positionView_Side = BG_HEIGHT - 2*margin;
   private final static int positionView_PosX = TextV_PosX + TextV_Side + margin;
   private final static int positionView_PosY = BG_PosY + margin;
+
   // Score
   private final float minNewScore = 0.2;
-  private int scorePosX = width/4 + margin;
-  private int scorePosY = margin;
   private float scoreLastTimeInterval = 0;
   private float lastScore = 0;
   private float totalScore= 0;
   ArrayList<Float> scores = new ArrayList<Float>();
-  private final PGraphics scoreView;
   private final color red = color(255, 0, 0); // Color for negative scores
   private final color green = color(0, 255, 0); // Color for positive scores
   // Bar Chart
   private final color barChartColor = color(230, 230, 200);
-  private final PGraphics barChart = createGraphics(width/2 - 2*margin, height/4 - 2*margin, P2D);
-  private final int barChartPosX = width/2 + margin;
-  private final static int barChartPosY = margin;
+  private final PGraphics barChart;
+  private final static float chartLength = WINDOW_WIDTH/2 - 4*margin;
+  private final static int heightBegin = WINDOW_HEIGHT/4 - 6*margin;
+  private final static int recHeight = 5;
+
   // Scroll Board
-  private final int scrollBarLength = width / 2 - 4 * margin; // For scroll length
+  private final int scrollBarLength = WINDOW_WIDTH - 2*TopV_Side - 4*margin; // For scroll length
+  private final int scrollBarPosX = TextV_PosX + TextV_Side + margin;
+  private final int scrollBarPosY = BG_PosY + TextV_Side - margin;
   private final HScrollbar hs;
+
   // Timer
   Timer timer;
   private int lastTimeInterval = 0;
@@ -96,9 +99,7 @@ class Dashboard {
     textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
     textView.fill(0);
     textView.textFont(font);
-    //mouse = new PVector (mouseX-boxCenterX, mouseY-boxCenterY);
     textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + velocity + "\n\nLast Score:\n" + lastScore, 30, 30);
-    //textView.text("Position Mouse X:" + mouse.x + "\nPosition Mouse Y:\n" + mouse.y + "\n\nBall X:\n" + ball.getLocation().x + "\nBall Y : " + ball.getLocation().y, 30, 30);
 
     textView.endDraw();
     image(textView, TextV_PosX, TextV_PosY);
@@ -132,30 +133,10 @@ class Dashboard {
     velocity = v;
   }
 
-  void drawScore(){
-    pushStyle();
-      textSize(textSize);
-      pushMatrix();
-        translate(scorePosX + margin, scorePosY + textSize + margin);
-        scoreView.beginDraw();
-          scoreView.background(255, 255, 255, 100);
-          
-          fill(0);
-          text("Total score : " + numberFormat.format(totalScore) 
-            + "\n\nVelocity :     " + numberFormat.format(velocity) 
-            + "\n\nLast score :  " + numberFormat.format(lastScore), 0, 0);
-        scoreView.endDraw();
-      popMatrix();
-    popStyle();
-  }
-
   void drawBarChart() {
     hs.update();
-    float chartLength = width/2 - 4*margin;
     int nbToShow = 10 + (int)(90 * ((exp(hs.getPos()) - 1) / exp(1)));
-    int recHeight = 5;
     float recLength = chartLength / nbToShow;
-    int heightBegin = height/4 - 6*margin;
     pushStyle();
     barChart.beginDraw();
     barChart.background(barChartColor);
@@ -175,60 +156,53 @@ class Dashboard {
     barChart.endDraw();
     popStyle();
   }
-  
+
   void updateScroll() {
     pushStyle();
     hs.update();
     hs.display();
     popStyle();
   }
-  void pauseScore(){
+  void pauseScore() {
     timer.pause();
   }
-  
-  void runScore(){
+
+  void runScore() {
     timer.run();
   }
-  void updateScoreStatistics(float newScore){
-    if (timer.getElapsed()/timeInterval > lastTimeInterval){
+  void updateScoreStatistics(float newScore) {
+    if (timer.getElapsed()/timeInterval > lastTimeInterval) {
       scores.add(scoreLastTimeInterval);
       lastTimeInterval++;
       scoreLastTimeInterval = 0.;
     }
-    if (abs(newScore) > minNewScore){
+    if (abs(newScore) > minNewScore) {
       lastScore = newScore;
       totalScore += lastScore;
       scoreLastTimeInterval += newScore;
     }
   }
 
-void drawAll(){
-  
+  void drawAll() {
+
     dashboard.drawBackground();
     dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
     dashboard.drawTextView();
     dashboard.updateScroll();
-  
-    drawScore();
-    //drawTopView(mover, cylinders);
+
     drawBarChart();
-    
-    //image(background, 0, 0);
-    //image(scoreView, scorePosX, scorePosY);
-    //image(topView, TopV_PosX, TopV_PosY);
-    //image(barChart, barChartPosX, barChartPosY);
   }
-  
+
   public Dashboard() {
-  
+
     timer = new Timer();
-    hs = new HScrollbar((3*width)/4 - scrollBarLength/2, height - 4 * margin, scrollBarLength, 20);
-    
-    scoreView = createGraphics(width/4 - 2*margin, height/4 - 2*margin, P2D);
+    hs = new HScrollbar(scrollBarPosX, scrollBarPosY, scrollBarLength, 20);
+
     background = createGraphics(BG_WIDTH, BG_HEIGHT, P2D);
     topView = createGraphics(TopV_Side, TopV_Side, P2D);
     textView = createGraphics(TextV_Side, TopV_Side, P2D);
     positionView = createGraphics(positionView_Side, positionView_Side);
+    barChart = createGraphics(WINDOW_WIDTH/2 - 2*margin, WINDOW_HEIGHT/4 - 2*margin, P2D);
     totalScore=0;
     velocity=0;
     lastScore=0;
