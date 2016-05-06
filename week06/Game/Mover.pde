@@ -10,12 +10,16 @@ class Mover {
   private PVector location;
   private PVector velocity;
   private PVector gravity;
+  private float normalForce; 
+  private final static float mu = 0.01;
+
   
   private float xMin;
   private float xMax;
   private float yMin;
   private float yMax;
   private float ballRadius;
+  private PVector friction;
   
   private Dashboard dashboard;
   
@@ -23,6 +27,7 @@ class Mover {
     this.location = new PVector(0, 0);
     this.velocity = new PVector(0, 0);
     this.gravity = new PVector(0, 0);
+    normalForce = 0;
     
     this.xMin = xMin;
     this.xMax = xMax;
@@ -41,6 +46,8 @@ class Mover {
   void update(float rX, float rZ) {
     gravity.x = sin(rZ) * 0.1;
     gravity.y = sin(rX) * 0.1;
+    normalForce = abs(cos(rZ));
+
     
     velocity.add(gravity);
     velocity.add(friction());
@@ -53,10 +60,9 @@ class Mover {
     Returns the friction vector of the ball
   */
   PVector friction() {
-    float normalForce = 1;
-    float mu = 0.025;
+    //float normalForce = 1;
     float frictionMagnitude = normalForce * mu;
-    PVector friction = velocity.copy();
+    friction = velocity.copy();
     
     friction.mult(-1);
     friction.normalize();
@@ -78,21 +84,21 @@ class Mover {
   void checkEdges() {
     if (location.x >= xMax) {
        dashboard.setScore(-velocity.mag());
-       velocity.x = velocity.x * -0.55;
+       velocity.x = velocity.x * -0.70;
        location.x = xMax;
     } else if (location.x <= xMin) {
         dashboard.setScore(-velocity.mag());
-        velocity.x = velocity.x * -0.55;
+        velocity.x = velocity.x * -0.70;
         location.x = xMin;
     }
      
     if (location.y >= yMax) {
         dashboard.setScore(-velocity.mag());
-         velocity.y = velocity.y * -1;
+         velocity.y = velocity.y * -0.70;
          location.y = yMax;
     } else if (location.y <= yMin) {
          dashboard.setScore(-velocity.mag());
-         velocity.y = velocity.y * -1;
+         velocity.y = velocity.y * -0.70;
          location.y = yMin;
     }
   } 
