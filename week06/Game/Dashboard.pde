@@ -43,8 +43,11 @@ class Dashboard {
   // Scroll Board
   private final int scrollBarLength = WINDOW_WIDTH - 2*TopV_Side - 4*margin; // For scroll length
   private final int scrollBarPosX = TextV_PosX + TextV_Side + margin;
-  private final int scrollBarPosY = BG_PosY + TextV_Side - margin;
+  private final static int scrollBarPosY = BG_PosY + TextV_Side - margin;
   private final HScrollbar hs;
+  
+  private final static int barChartPosY = scrollBarPosY - TopV_Side + 2*margin;
+
 
   // Timer
   Timer timer;
@@ -96,8 +99,8 @@ class Dashboard {
     textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
     textView.fill(0);
     textView.textFont(font);
-    //textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + ball.getVelocity() + "\n\nLast Score:\n" + lastScore, 30, 30);
-    textView.text("1:\n" + scoreLastTimeInterval + "\n\n2:\n" + lastTimeInterval + "\n\n3:\n" + lastScore, 30, 30);
+    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + ball.getVelocity() + "\n\nLast Score:\n" + lastScore, 30, 30);
+    //textView.text("1:\n" + scoreLastTimeInterval + "\n\n2:\n" + lastTimeInterval + "\n\n3:\n" + lastScore, 30, 30);
 
 
     textView.endDraw();
@@ -142,7 +145,7 @@ class Dashboard {
     }
     barChart.endDraw();
     popStyle();
-    image(barChart, scrollBarPosX, scrollBarPosY - TopV_Side);
+    image(barChart, scrollBarPosX, barChartPosY);
   }
 
   void updateScroll() {
@@ -167,8 +170,8 @@ class Dashboard {
     }
     if (abs(newScore) > minNewScore) {
       lastScore = newScore;
-      totalScore += lastScore;
-      scoreLastTimeInterval += newScore;
+      totalScore += newScore;
+      scoreLastTimeInterval += lastScore;
     }
   }
 
@@ -190,6 +193,6 @@ class Dashboard {
     topView = createGraphics(TopV_Side, TopV_Side, P2D);
     textView = createGraphics(TextV_Side, TopV_Side, P2D);
     positionView = createGraphics(positionView_Side, positionView_Side);
-    barChart = createGraphics(WINDOW_WIDTH/2 - 2*margin, WINDOW_HEIGHT/4 - 2*margin, P2D);
+    barChart = createGraphics(scrollBarLength, TopV_Side - 2 * margin, P2D);
   }
 }
