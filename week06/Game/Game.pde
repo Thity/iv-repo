@@ -51,6 +51,8 @@ void draw() {
   // The Object Placement Mode when the shift is pressed and otherwise the Game Mode.
 
   if (!shift) {
+    
+    dashboard.runScore();
     pushMatrix();
 
     translate(boxCenterX, boxCenterY, 0);
@@ -64,6 +66,7 @@ void draw() {
     ball.checkEdges();
     
   } else {
+    dashboard.pauseScore();
     pushMatrix();
     translate(boxCenterX, boxCenterY, 0);
     rotateX(-PI/2);
@@ -81,12 +84,6 @@ void draw() {
 
   fill(255, 255, 255);
   dashboard.drawAll();
-  /*
-  dashboard.drawBackground();
-  dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
-  dashboard.drawTextView();
-  dashboard.updateScroll();
-  */
 }
 
 //inputs 

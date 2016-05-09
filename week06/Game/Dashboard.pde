@@ -51,12 +51,9 @@ class Dashboard {
   private int lastTimeInterval = 0;
   private final int timeInterval = 1000;
 
-  private PVector mouse;
-
-  private float velocity;
   DecimalFormat numberFormat = numberFormat = new DecimalFormat ("0.000");
   private final static int textSize = 10;
-  private PFont font = createFont("Helvetica", textSize);
+  private final PFont font = createFont("Helvetica", textSize);
 
 
 
@@ -99,7 +96,9 @@ class Dashboard {
     textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
     textView.fill(0);
     textView.textFont(font);
-    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + velocity + "\n\nLast Score:\n" + lastScore, 30, 30);
+    //textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + ball.getVelocity() + "\n\nLast Score:\n" + lastScore, 30, 30);
+    textView.text("1:\n" + scoreLastTimeInterval + "\n\n2:\n" + lastTimeInterval + "\n\n3:\n" + lastScore, 30, 30);
+
 
     textView.endDraw();
     image(textView, TextV_PosX, TextV_PosY);
@@ -124,17 +123,7 @@ class Dashboard {
     drawPositionView();
   }
 
-  public void setScore(float score) {
-    totalScore += score;
-    lastScore = score;
-  }
-
-  public void setVelocity(float v) {
-    velocity = v;
-  }
-
   void drawBarChart() {
-    hs.update();
     int nbToShow = 10 + (int)(90 * ((exp(hs.getPos()) - 1) / exp(1)));
     float recLength = chartLength / nbToShow;
     pushStyle();
@@ -151,10 +140,9 @@ class Dashboard {
         barChart.rect(margin + ((i - beginIndex) * recLength), heightBegin - (j*recHeight), recLength, -recHeight);
       }
     }
-
-
     barChart.endDraw();
     popStyle();
+    image(barChart, scrollBarPosX, scrollBarPosY - TopV_Side);
   }
 
   void updateScroll() {
@@ -163,6 +151,7 @@ class Dashboard {
     hs.display();
     popStyle();
   }
+
   void pauseScore() {
     timer.pause();
   }
@@ -184,13 +173,12 @@ class Dashboard {
   }
 
   void drawAll() {
-
     dashboard.drawBackground();
     dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
+    drawBarChart();
+
     dashboard.drawTextView();
     dashboard.updateScroll();
-
-    drawBarChart();
   }
 
   public Dashboard() {
@@ -203,8 +191,5 @@ class Dashboard {
     textView = createGraphics(TextV_Side, TopV_Side, P2D);
     positionView = createGraphics(positionView_Side, positionView_Side);
     barChart = createGraphics(WINDOW_WIDTH/2 - 2*margin, WINDOW_HEIGHT/4 - 2*margin, P2D);
-    totalScore=0;
-    velocity=0;
-    lastScore=0;
   }
 }
