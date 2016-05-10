@@ -53,7 +53,7 @@ class HScrollbar {
     if (abs(newSliderPosition - sliderPosition) > 1) {
       sliderPosition = sliderPosition + (newSliderPosition - sliderPosition);
     }
-  }
+}
 
   /**
    * @brief Clamps the value into the interval

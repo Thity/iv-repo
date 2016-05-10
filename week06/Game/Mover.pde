@@ -82,21 +82,21 @@ class Mover {
   */
   void checkEdges() {
     if (location.x >= xMax) {
-       dashboard.updateScoreStatistics(-velocity.mag());
+       dashboard.addScore(-velocity.mag());
        velocity.x = velocity.x * -0.70;
        location.x = xMax;
     } else if (location.x <= xMin) {
-        dashboard.updateScoreStatistics(-velocity.mag());
+        dashboard.addScore(-velocity.mag());
         velocity.x = velocity.x * -0.70;
         location.x = xMin;
     }
      
     if (location.y >= yMax) {
-        dashboard.updateScoreStatistics(-velocity.mag());
+        dashboard.addScore(-velocity.mag());
          velocity.y = velocity.y * -0.70;
          location.y = yMax;
     } else if (location.y <= yMin) {
-         dashboard.updateScoreStatistics(-velocity.mag());
+         dashboard.addScore(-velocity.mag());
          velocity.y = velocity.y * -0.70;
          location.y = yMin;
     }
@@ -112,7 +112,7 @@ class Mover {
         PVector n = c.copy().sub(location).normalize();
         velocity.sub(n.copy().mult(2 * (velocity.dot(n))));
         location = c.copy().add(n.mult(-d*1.01));
-        dashboard.updateScoreStatistics(velocity.mag());
+        dashboard.addScore(velocity.mag());
       }
     }
   }

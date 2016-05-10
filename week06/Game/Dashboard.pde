@@ -54,7 +54,6 @@ class Dashboard {
   private int lastTimeInterval = 0;
   private final int timeInterval = 1000;
 
-  DecimalFormat numberFormat = numberFormat = new DecimalFormat ("0.000");
   private final static int textSize = 10;
   private final PFont font = createFont("Helvetica", textSize);
 
@@ -128,18 +127,19 @@ class Dashboard {
 
   void drawBarChart() {
     int nbToShow = 10 + (int)(90 * ((exp(hs.getPos()) - 1) / exp(1)));
+    updateScoreStatistics();
     float recLength = chartLength / nbToShow;
     pushStyle();
     barChart.beginDraw();
     barChart.background(barChartColor);
     int beginIndex = max(0, scores.size() - nbToShow);
     for (int i=beginIndex; i < scores.size(); i++) {
-      int h = 1 + (int)log(1. + 1000. * abs(scores.get(i))); // Logarithmic scale to show the differences
+      float h = abs(scores.get(i));
       if (scores.get(i) >= 0.)
         barChart.fill(green);
       else
         barChart.fill(red);
-      for (int j=0; j<h; j++) {
+      for (int j=0; j<h/5; j++) {
         barChart.rect(margin + ((i - beginIndex) * recLength), heightBegin - (j*recHeight), recLength, -recHeight);
       }
     }
@@ -162,16 +162,16 @@ class Dashboard {
   void runScore() {
     timer.run();
   }
-  void updateScoreStatistics(float newScore) {
+  void updateScoreStatistics() {
     if (timer.getElapsed()/timeInterval > lastTimeInterval) {
-      scores.add(scoreLastTimeInterval);
+      scores.add(totalScore);
       lastTimeInterval++;
-      scoreLastTimeInterval = 0.;
     }
+  }
+  void addScore(float newScore) {
     if (abs(newScore) > minNewScore) {
       lastScore = newScore;
       totalScore += newScore;
-      scoreLastTimeInterval += lastScore;
     }
   }
 
