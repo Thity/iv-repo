@@ -43,7 +43,7 @@ class Dashboard {
   private final int scrollBarPosX = TextV_PosX + TextV_Side + margin;
   private final static int scrollBarPosY = BG_PosY + TextV_Side - margin;
   private final HScrollbar hs;
-  
+
   private final static int barChartPosY = scrollBarPosY - TopV_Side + 2*margin;
 
 
@@ -132,12 +132,9 @@ class Dashboard {
     barChart.background(barChartColor);
     int beginIndex = max(0, scores.size() - nbToShow);
     for (int i=beginIndex; i < scores.size(); i++) {
-      float h = abs(scores.get(i));
-      if (scores.get(i) >= 0.)
-        barChart.fill(green);
-      else
-        barChart.fill(red);
-      for (int j=0; j<h/5; j++) {
+      float h = 1 + abs(scores.get(i));
+      barChart.fill(green);
+      for (int j=0; j<h/3; j++) {
         barChart.rect(margin + ((i - beginIndex) * recLength), heightBegin - (j*recHeight), recLength, -recHeight);
       }
     }
@@ -160,18 +157,22 @@ class Dashboard {
   void runScore() {
     timer.run();
   }
-  
+
   void updateScoreStatistics() {
     if (timer.getElapsed()/timeInterval > lastTimeInterval) {
       scores.add(totalScore);
       lastTimeInterval++;
     }
   }
-  
+
   void addScore(float newScore) {
     if (abs(newScore) > minNewScore) {
-      lastScore = newScore;
-      totalScore += newScore;
+      if (totalScore + newScore < 0) {
+        totalScore = 0;
+      } else {
+        lastScore = newScore;
+        totalScore += newScore;
+      }
     }
   }
 
