@@ -26,8 +26,7 @@ class Dashboard {
   private final static int positionView_PosY = BG_PosY + margin;
 
   // Score
-  private final float minNewScore = 0.2;
-  private float scoreLastTimeInterval = 0;
+  private final float minNewScore = 1;
   private float lastScore = 0;
   private float totalScore= 0;
   ArrayList<Float> scores = new ArrayList<Float>();
@@ -36,7 +35,6 @@ class Dashboard {
   // Bar Chart
   private final color barChartColor = color(230, 230, 200);
   private final PGraphics barChart;
-  private final static float chartLength = WINDOW_WIDTH/2 - 4*margin;
   private final static int heightBegin = WINDOW_HEIGHT/4 - 6*margin;
   private final static int recHeight = 5;
 
@@ -126,9 +124,9 @@ class Dashboard {
   }
 
   void drawBarChart() {
-    int nbToShow = 10 + (int)(90 * ((exp(hs.getPos()) - 1) / exp(1)));
+    int nbToShow = 10 + (int)(100 * ((exp(hs.getPos()) - 1) / exp(1)));
     updateScoreStatistics();
-    float recLength = chartLength / nbToShow;
+    float recLength = scrollBarLength / nbToShow;
     pushStyle();
     barChart.beginDraw();
     barChart.background(barChartColor);
@@ -162,12 +160,14 @@ class Dashboard {
   void runScore() {
     timer.run();
   }
+  
   void updateScoreStatistics() {
     if (timer.getElapsed()/timeInterval > lastTimeInterval) {
       scores.add(totalScore);
       lastTimeInterval++;
     }
   }
+  
   void addScore(float newScore) {
     if (abs(newScore) > minNewScore) {
       lastScore = newScore;
@@ -176,12 +176,12 @@ class Dashboard {
   }
 
   void drawAll() {
-    dashboard.drawBackground();
-    dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
+    drawBackground();
+    drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
     drawBarChart();
 
-    dashboard.drawTextView();
-    dashboard.updateScroll();
+    drawTextView();
+    updateScroll();
   }
 
   public Dashboard() {
