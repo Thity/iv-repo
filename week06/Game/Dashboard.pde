@@ -1,3 +1,13 @@
+/**
+ * @file Dashboard.pde
+ * @brief bottom board with informations
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 05.04.2016
+ */
+
 import java.text.DecimalFormat;
 import java.util.Timer;
 class Dashboard {
@@ -96,7 +106,7 @@ class Dashboard {
     textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
     textView.fill(0);
     textView.textFont(font);
-    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + ball.getVelocity() + "\n\nLast Score:\n" + lastScore, 30, 30);
+    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + Math.round(5*ball.getVelocity()) + "\n\nLast Score:\n" + lastScore, 30, 30);
     //textView.text("1:\n" + scoreLastTimeInterval + "\n\n2:\n" + lastTimeInterval + "\n\n3:\n" + lastScore, 30, 30);
 
 

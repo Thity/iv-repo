@@ -85,10 +85,3 @@ void draw() {
   fill(255, 255, 255);
   dashboard.drawAll();
 }
-
-//inputs 
-//void mouseDragged(){ input.mouseDragged();}
-//void mouseWheel(MouseEvent event){ input.mouseWheel(event);}
-//void mousePressed(){ input.mousePressed();}
-//void keyPressed(){ input.keyPressed();}   
-//void keyReleased(){ input.keyReleased();}

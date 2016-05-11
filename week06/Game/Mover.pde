@@ -1,6 +1,13 @@
 /**
-  @File Mover.pde
-*/
+ * @file Mover.pde
+ * @brief the ball of the game
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 28.03.2016
+ */
+
 private final static float radiusBall = 12;
 private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
 private final static float smooth = 0.01;

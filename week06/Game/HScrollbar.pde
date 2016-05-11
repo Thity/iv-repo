@@ -1,3 +1,13 @@
+/**
+ * @file HScrollbar.pde
+ * @brief Scrollbar to expand scores history
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 08.04.2016
+ */
+
 class HScrollbar {
   float barWidth;  //Bar's width in pixels
   float barHeight; //Bar's height in pixels
@@ -81,6 +91,10 @@ class HScrollbar {
     else {
       return false;
     }
+  }
+
+  boolean isLocked(){
+    return locked;
   }
 
   /**
