@@ -56,7 +56,7 @@ void draw() {
   //    cam.read();
   //  }
   //  img = cam.get();
-  PImage imgOrig = loadImage("board1.jpg");
+  PImage imgOrig = loadImage("board3.jpg");
   imgOrig.resize(533, 400);
   imgOrig.updatePixels();
   
@@ -64,7 +64,6 @@ void draw() {
   img = conv.gaussianBlur(img);
   img = conv.gaussianBlur(img);
   img = filter.transformToBW(img, 150, 255);
-  img = filter.HSBFilter(imgOrig, minHue, maxHue, minSat, maxSat, minBri, maxBri);
   img = conv.gaussianBlur(img);
   img = conv.gaussianBlur(img);
   
