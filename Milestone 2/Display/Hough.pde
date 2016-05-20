@@ -149,7 +149,7 @@ class Hough {
 
   private void createBestLinesPolars() {
     int n = bestCandidates.size();
-    //if(n > 4) n = 4;
+    if(n > 4) n = 4;
     for (int i = 0; i < n; i++) {
       bestLines.add(computePolars(bestCandidates.get(i)));
     }
