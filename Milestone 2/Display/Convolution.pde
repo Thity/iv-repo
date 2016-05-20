@@ -32,8 +32,8 @@ class Convolution {
         }
       }
     }
-          res.updatePixels();
-      return res;
+    res.updatePixels();
+    return res;
   }
 
   /*

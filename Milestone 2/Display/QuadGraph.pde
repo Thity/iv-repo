@@ -30,11 +30,11 @@ class QuadGraph {
     for (int i = 0; i < lines.size(); i++) {
       for (int j = i + 1; j < lines.size(); j++) {
         if (intersect(lines.get(i), lines.get(j), width, height)) {
-
           // TODO
           // fill the graph using intersect() to check if two lines are
           // connected in the graph.
-
+          graph[idx][0] = i;
+          graph[idx][1] = j;
           idx++;
         }
       }
@@ -62,6 +62,21 @@ class QuadGraph {
       return true;
     else
       return false;
+  }
+
+  PVector intersection(PVector line1, PVector line2) {
+    double sin_t1 = Math.sin(line1.y);
+    double sin_t2 = Math.sin(line2.y);
+    double cos_t1 = Math.cos(line1.y);
+    double cos_t2 = Math.cos(line2.y);
+    float r1 = line1.x;
+    float r2 = line2.x;
+
+    double denom = cos_t2 * sin_t1 - cos_t1 * sin_t2;
+
+    int x = (int) ((r2 * sin_t1 - r1 * sin_t2) / denom);
+    int y = (int) ((-r2 * cos_t1 + r1 * cos_t2) / denom);
+    return new PVector(x,y);
   }
 
   List<int[]> findCycles() {

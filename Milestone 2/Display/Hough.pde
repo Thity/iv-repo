@@ -83,12 +83,20 @@ class Hough {
 
         // compute the intersection and add it to ’intersections’
         if (line1.y != line2.y) {//not parallel
-          float d = cos(line2.y)*sin(line1.y)-cos(line1.y)*sin(line2.y);
-          float inverseD = 1.0/d;
-          float x = (line2.x*sin(line1.y) - line1.x*sin(line2.y))*inverseD;
-          float y = (-line2.x*cos(line1.y) + line1.x*cos(line2.y))*inverseD;
+
+          double sin_t1 = Math.sin(line1.y);
+          double sin_t2 = Math.sin(line2.y);
+          double cos_t1 = Math.cos(line1.y);
+          double cos_t2 = Math.cos(line2.y);
+          float r1 = line1.x;
+          float r2 = line2.x;
+
+          double denom = cos_t2 * sin_t1 - cos_t1 * sin_t2;
+
+          int x = (int) ((r2 * sin_t1 - r1 * sin_t2) / denom);
+          int y = (int) ((-r2 * cos_t1 + r1 * cos_t2) / denom);
           intersections.add(new PVector(x, y));
-          fill(255,128,0);
+          fill(255, 128, 0);
           ellipse(x, y, 10, 10);
         }
       }
@@ -141,8 +149,8 @@ class Hough {
 
   private void createBestLinesPolars() {
     int n = bestCandidates.size();
-    if(n > 4) n = 4;
-    for (int i = 0 ; i < n ; i++) {
+    //if(n > 4) n = 4;
+    for (int i = 0; i < n; i++) {
       bestLines.add(computePolars(bestCandidates.get(i)));
     }
   }
@@ -153,11 +161,11 @@ class Hough {
       plotLineFromPolars(rPhi, edgeImg);
     }
   }
-  
-  public void drawIntersections(){
+
+  public void drawIntersections() {
     getIntersections(bestLines);
-    for(PVector point : intersections) {
-      fill(255,128,0);
+    for (PVector point : intersections) {
+      fill(255, 128, 0);
       ellipse(point.x, point.y, 10, 10);
     }
   }
@@ -220,6 +228,10 @@ class Hough {
         plotLineFromPolars(rPhi, edgeImg);
       }
     }
+  }
+
+  public List<PVector> getBestLines() {
+    return bestLines;
   }
 }
 
