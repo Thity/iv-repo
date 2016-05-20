@@ -57,7 +57,7 @@ void draw() {
   //    cam.read();
   //  }
   //  img = cam.get();
-  PImage imgOrig = loadImage("board3.jpg");
+  PImage imgOrig = loadImage("board1.jpg");
   print(imgOrig.width);
   imgOrig.resize(533, 400);
   imgOrig.updatePixels();
