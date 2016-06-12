@@ -57,7 +57,7 @@ void draw() {
   //    cam.read();
   //  }
   //  img = cam.get();
-  PImage imgOrig = loadImage("board1.jpg");
+  PImage imgOrig = loadImage("board2.jpg");
   print(imgOrig.width);
   imgOrig.resize(533, 400);
   imgOrig.updatePixels();
@@ -102,7 +102,7 @@ void draw() {
     PVector c41 = qg.intersection(l4, l1);
     // Choose a random, semi-transparent colour
     Random random = new Random();
-    if (qg.isConvex(c12, c23, c34, c41) && qg.validArea(c12, c23, c34, c41, 1000000, 100000) && qg.nonFlatQuad(c12, c23, c34, c41)) {
+    if (qg.isConvex(c12, c23, c34, c41) && qg.validArea(c12, c23, c34, c41, 10000000, 0) && qg.nonFlatQuad(c12, c23, c34, c41)) {
       fill(color(min(255, random.nextInt(300)), 
         min(255, random.nextInt(300)), 
         min(255, random.nextInt(300)), 50));
