@@ -40,9 +40,9 @@ class QuadGraph {
       }
     }
   }
-//////////////////////////////////////////////////////////////////////////////////////
-//esto es para poder ir desde el main
-////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
+  //esto es para poder ir desde el main
+  ////////////////////////////////////////////////////////////////////
   /** Returns true if polar lines 1 and 2 intersect 
    * inside an area of size (width, height)
    */
@@ -78,7 +78,7 @@ class QuadGraph {
 
     int x = (int) ((r2 * sin_t1 - r1 * sin_t2) / denom);
     int y = (int) ((-r2 * cos_t1 + r1 * cos_t2) / denom);
-    return new PVector(x,y);
+    return new PVector(x, y);
   }
 
   List<int[]> findCycles() {
@@ -233,8 +233,8 @@ class QuadGraph {
 
 
   /** Check if a quad is convex or not.
-   */  
-   boolean isConvex(PVector c1, PVector c2, PVector c3, PVector c4) {
+   */
+  boolean isConvex(PVector c1, PVector c2, PVector c3, PVector c4) {
 
     PVector v21= PVector.sub(c1, c2);
     PVector v32= PVector.sub(c2, c3);
@@ -302,7 +302,7 @@ class QuadGraph {
   }
 
 
-  List<PVector> sortCorners(List<PVector> quad) {
+  public List<PVector> sortCorners(List<PVector> quad) {
 
     // 1 - Sort corners so that they are ordered clockwise
     PVector a = quad.get(0);
@@ -328,20 +328,32 @@ class QuadGraph {
 
     return quad;
   }
+
+  public List<PVector> sortCorners2(List<PVector> quad) {
+    // Sort corners so that they are ordered clockwise
+    PVector a = quad.get(0);
+    PVector b = quad.get(2);
+    PVector center = new PVector((a.x+b.x)/2, (a.y+b.y)/2);
+    Collections.sort(quad, new CWComparator(center));
+    // TODO:
+    // Re-order the corners so that the first one is the closest to the
+    // origin (0,0) of the image.
+    // You can use Collections.rotate to shift the corners inside the quad.
+
+    return quad;
+  }
 }
 
 class CWComparator implements Comparator<PVector> {
-
   PVector center;
-
   public CWComparator(PVector center) {
     this.center = center;
   }
 
   @Override
     public int compare(PVector b, PVector d) {
-    if (Math.atan2(b.y-center.y, b.x-center.x)<Math.atan2(d.y-center.y, d.x-center.x))      
-      return -1; 
+    if (Math.atan2(b.y-center.y, b.x-center.x)<Math.atan2(d.y-center.y, d.x-center.x))
+      return -1;
     else return 1;
   }
 }
