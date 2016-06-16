@@ -16,22 +16,9 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Random;
 
-class ImageProcessing extends PApplet {
-  //Capture cam;
-  //...
-  private Convolution conv = new Convolution();
-  private FilterColors filter = new FilterColors();
-  private QuadGraph qg = new QuadGraph();
-  // for filtering lego board
-  private float minHue = 96;
-  private float maxHue = 144;
-  private float minSat = 100;
-  private float maxSat = 255;
-  private float minBri = 32;
-  private float maxBri = 149;
-  //private Capture cam;
-  private PImage img;
+import processing.video.*;
 
+class ImageProcessing extends PApplet {
   void settings() {
     size(1466, 400);
   }
@@ -42,12 +29,10 @@ class ImageProcessing extends PApplet {
     //  if (cam.available() == true) {
     //    cam.read();
     //  }
-    //  img = cam.get();
+    //imgOrig = cam.get();
     PImage imgOrig = loadImage("board2.jpg");
-    print(imgOrig.width);
     imgOrig.resize(533, 400);
     imgOrig.updatePixels();
-    print(imgOrig.width);
 
     img = filter.HSBFilter(imgOrig, minHue, maxHue, minSat, maxSat, minBri, maxBri);
     img = conv.gaussianBlur(img);
