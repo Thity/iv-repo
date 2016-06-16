@@ -1,3 +1,13 @@
+/**
+ * @file Timer.pde
+ * @brief Timer of the game
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 29.03.2016
+ */
+
 class Timer{
   int elapsed;
   int last;

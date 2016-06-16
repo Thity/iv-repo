@@ -1,6 +1,13 @@
 /**
-  @File Mover.pde
-*/
+ * @file Mover.pde
+ * @brief the ball of the game
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 28.03.2016
+ */
+
 private final static float radiusBall = 12;
 private final static float ballOffset = radiusBall + (boxY/ 2) + 1;
 private final static float smooth = 0.01;
@@ -53,7 +60,6 @@ class Mover {
     velocity.add(friction());
     location.add(velocity);
     checkCylinderCollision();
-    dashboard.setVelocity(velocity.mag());
   }
   
   /**
@@ -83,21 +89,21 @@ class Mover {
   */
   void checkEdges() {
     if (location.x >= xMax) {
-       dashboard.setScore(-velocity.mag());
+       dashboard.addScore(-velocity.mag());
        velocity.x = velocity.x * -0.70;
        location.x = xMax;
     } else if (location.x <= xMin) {
-        dashboard.setScore(-velocity.mag());
+        dashboard.addScore(-velocity.mag());
         velocity.x = velocity.x * -0.70;
         location.x = xMin;
     }
      
     if (location.y >= yMax) {
-        dashboard.setScore(-velocity.mag());
+        dashboard.addScore(-velocity.mag());
          velocity.y = velocity.y * -0.70;
          location.y = yMax;
     } else if (location.y <= yMin) {
-         dashboard.setScore(-velocity.mag());
+         dashboard.addScore(-velocity.mag());
          velocity.y = velocity.y * -0.70;
          location.y = yMin;
     }
@@ -113,9 +119,10 @@ class Mover {
         PVector n = c.copy().sub(location).normalize();
         velocity.sub(n.copy().mult(2 * (velocity.dot(n))));
         location = c.copy().add(n.mult(-d*1.01));
-        dashboard.setScore(velocity.mag());
+        dashboard.addScore(velocity.mag());
       }
     }
   }
   public PVector getLocation() { return location; }
+  public float getVelocity() { return velocity.mag(); }
 }

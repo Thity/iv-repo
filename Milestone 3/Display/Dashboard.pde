@@ -1,3 +1,13 @@
+/**
+ * @file Dashboard.pde
+ * @brief bottom board with informations
+ *
+ * @authors Pere Adell  
+ *          Thierry Bossy
+ *          Rafael Pizzarro
+ * @date 05.04.2016
+ */
+
 import java.text.DecimalFormat;
 import java.util.Timer;
 class Dashboard {
@@ -26,8 +36,7 @@ class Dashboard {
   private final static int positionView_PosY = BG_PosY + margin;
 
   // Score
-  private final float minNewScore = 0.2;
-  private float scoreLastTimeInterval = 0;
+  private final float minNewScore = 1;
   private float lastScore = 0;
   private float totalScore= 0;
   ArrayList<Float> scores = new ArrayList<Float>();
@@ -36,27 +45,25 @@ class Dashboard {
   // Bar Chart
   private final color barChartColor = color(230, 230, 200);
   private final PGraphics barChart;
-  private final static float chartLength = WINDOW_WIDTH/2 - 4*margin;
   private final static int heightBegin = WINDOW_HEIGHT/4 - 6*margin;
   private final static int recHeight = 5;
 
   // Scroll Board
   private final int scrollBarLength = WINDOW_WIDTH - 2*TopV_Side - 4*margin; // For scroll length
   private final int scrollBarPosX = TextV_PosX + TextV_Side + margin;
-  private final int scrollBarPosY = BG_PosY + TextV_Side - margin;
+  private final static int scrollBarPosY = BG_PosY + TextV_Side - margin;
   private final HScrollbar hs;
+
+  private final static int barChartPosY = scrollBarPosY - TopV_Side + 2*margin;
+
 
   // Timer
   Timer timer;
   private int lastTimeInterval = 0;
   private final int timeInterval = 1000;
 
-  private PVector mouse;
-
-  private float velocity;
-  DecimalFormat numberFormat = numberFormat = new DecimalFormat ("0.000");
   private final static int textSize = 10;
-  private PFont font = createFont("Helvetica", textSize);
+  private final PFont font = createFont("Helvetica", textSize);
 
 
 
@@ -99,7 +106,9 @@ class Dashboard {
     textView.rect(3, 3, TextV_Side - 6, TextV_Side - 6);
     textView.fill(0);
     textView.textFont(font);
-    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + velocity + "\n\nLast Score:\n" + lastScore, 30, 30);
+    textView.text("Total Score:\n" + totalScore + "\n\nVelocity:\n" + Math.round(5*ball.getVelocity()) + "\n\nLast Score:\n" + lastScore, 30, 30);
+    //textView.text("1:\n" + scoreLastTimeInterval + "\n\n2:\n" + lastTimeInterval + "\n\n3:\n" + lastScore, 30, 30);
+
 
     textView.endDraw();
     image(textView, TextV_PosX, TextV_PosY);
@@ -124,37 +133,24 @@ class Dashboard {
     drawPositionView();
   }
 
-  public void setScore(float score) {
-    totalScore += score;
-    lastScore = score;
-  }
-
-  public void setVelocity(float v) {
-    velocity = v;
-  }
-
   void drawBarChart() {
-    hs.update();
-    int nbToShow = 10 + (int)(90 * ((exp(hs.getPos()) - 1) / exp(1)));
-    float recLength = chartLength / nbToShow;
+    int nbToShow = 10 + (int)(100 * ((exp(hs.getPos()) - 1) / exp(1)));
+    updateScoreStatistics();
+    float recLength = scrollBarLength / nbToShow;
     pushStyle();
     barChart.beginDraw();
     barChart.background(barChartColor);
     int beginIndex = max(0, scores.size() - nbToShow);
     for (int i=beginIndex; i < scores.size(); i++) {
-      int h = 1 + (int)log(1. + 1000. * abs(scores.get(i))); // Logarithmic scale to show the differences
-      if (scores.get(i) >= 0.)
-        barChart.fill(green);
-      else
-        barChart.fill(red);
-      for (int j=0; j<h; j++) {
+      float h = 1 + abs(scores.get(i));
+      barChart.fill(green);
+      for (int j=0; j<h/3; j++) {
         barChart.rect(margin + ((i - beginIndex) * recLength), heightBegin - (j*recHeight), recLength, -recHeight);
       }
     }
-
-
     barChart.endDraw();
     popStyle();
+    image(barChart, scrollBarPosX, barChartPosY);
   }
 
   void updateScroll() {
@@ -163,6 +159,7 @@ class Dashboard {
     hs.display();
     popStyle();
   }
+
   void pauseScore() {
     timer.pause();
   }
@@ -170,27 +167,32 @@ class Dashboard {
   void runScore() {
     timer.run();
   }
-  void updateScoreStatistics(float newScore) {
+
+  void updateScoreStatistics() {
     if (timer.getElapsed()/timeInterval > lastTimeInterval) {
-      scores.add(scoreLastTimeInterval);
+      scores.add(totalScore);
       lastTimeInterval++;
-      scoreLastTimeInterval = 0.;
     }
+  }
+
+  void addScore(float newScore) {
     if (abs(newScore) > minNewScore) {
-      lastScore = newScore;
-      totalScore += lastScore;
-      scoreLastTimeInterval += newScore;
+      if (totalScore + newScore < 0) {
+        totalScore = 0;
+      } else {
+        lastScore = newScore;
+        totalScore += newScore;
+      }
     }
   }
 
   void drawAll() {
-
-    dashboard.drawBackground();
-    dashboard.drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
-    dashboard.drawTextView();
-    dashboard.updateScroll();
-
+    drawBackground();
+    drawTopView(cylinders, cylinderBaseRadius, radiusBall, ball.location, boxX);
     drawBarChart();
+
+    drawTextView();
+    updateScroll();
   }
 
   public Dashboard() {
@@ -202,9 +204,6 @@ class Dashboard {
     topView = createGraphics(TopV_Side, TopV_Side, P2D);
     textView = createGraphics(TextV_Side, TopV_Side, P2D);
     positionView = createGraphics(positionView_Side, positionView_Side);
-    barChart = createGraphics(WINDOW_WIDTH/2 - 2*margin, WINDOW_HEIGHT/4 - 2*margin, P2D);
-    totalScore=0;
-    velocity=0;
-    lastScore=0;
+    barChart = createGraphics(scrollBarLength, TopV_Side - 2 * margin, P2D);
   }
 }
