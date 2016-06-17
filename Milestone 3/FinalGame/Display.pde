@@ -8,7 +8,7 @@
  * @date 06.05.2016
  */
 
-
+/*
 void draw() {
 
   img = filter.HSBFilter(img, minHue, maxHue, minSat, maxSat, minBri, maxBri);
@@ -23,7 +23,7 @@ void draw() {
   qg.build(lines, img.width, img.height);
   List<int[]> quads = qg.findCycles();
 
-/* Drawing Quads */
+/* Drawing Quads 
   for (int[] quad : quads) {
     PVector l1 = lines.get(quad[0]);
     PVector l2 = lines.get(quad[1]);
@@ -48,3 +48,4 @@ void draw() {
 
   noLoop();
 }
+*/

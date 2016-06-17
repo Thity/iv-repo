@@ -126,21 +126,22 @@ void draw() {
     List<PVector> lines = hough.getBestLines();
     qg.build(lines, img.width, img.height);
     List<int[]> quads = qg.findCycles();
-    int[] bestQuad = findBestQuad(quads);
+    int[] bestQuad = findBestQuad(quads, lines);
     /* Draw Quad */
     /* Get corners */
-    List<PVector> corners;
-    cornerns.add(lines.get(bestQuad[0]));
-    cornerns.add(lines.get(bestQuad[1]));
-    cornerns.add(lines.get(bestQuad[2]));
-    cornerns.add(lines.get(bestQuad[3]));
+    List<PVector> corners = new ArrayList<PVector>();
+
+    corners.add(lines.get(bestQuad[0]));
+    corners.add(lines.get(bestQuad[1]));
+    corners.add(lines.get(bestQuad[2]));
+    corners.add(lines.get(bestQuad[3]));
     // (intersection() is a simplified version of the
     // intersections() method you wrote last week, that simply
     // return the coordinates of the intersection between 2 lines)
-    PVector c12 = qg.intersection(l1, l2);
-    PVector c23 = qg.intersection(l2, l3);
-    PVector c34 = qg.intersection(l3, l4);
-    PVector c41 = qg.intersection(l4, l1);
+    PVector c12 = qg.intersection(corners.get(0), corners.get(1));
+    PVector c23 = qg.intersection(corners.get(1), corners.get(2));
+    PVector c34 = qg.intersection(corners.get(2), corners.get(3));
+    PVector c41 = qg.intersection(corners.get(3), corners.get(0));
     // Choose a random, semi-transparent colour
     Random random = new Random();
     if (qg.isConvex(c12, c23, c34, c41) && qg.validArea(c12, c23, c34, c41, 10000000, 0) && qg.nonFlatQuad(c12, c23, c34, c41)) {
@@ -150,26 +151,44 @@ void draw() {
       quad(c12.x, c12.y, c23.x, c23.y, c34.x, c34.y, c41.x, c41.y);
     }
     /* Get rotation */
-    PVector rot = twoThree.get3DRotations(corners);
-    rot.x = (rots.x > Math.PI/2) ? (float) (rots.x - Math.PI) : rots.x;
-    rot.x = (rots.x < -Math.PI/2) ? (float) (rots.x + Math.PI) : rots.x;
-     
-    rotations = rot;
-      
-    rX = rot.x;
-    rY = rot.y;
+    PVector rot = twoToThree.get3DRotations(corners);
+    rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
+    rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
+    rx = rot.x;
+    rz = rot.y;
   }
 }
 
-public int[] findBestQuad(List<int[]> quads) {
+public int[] findBestQuad(List<int[]> quads, List<PVector> lines) {
   float maxArea = 0;
-  flaot maxIdx = 0;
-  for (int i = 0; i < cycles.size(); i++) {
-    float area = Math.abs(0.5f * (quad.get(0) + quad.get(0) + quad.get(0) + quad.get(0)));
+  int maxIdx = 0;
+  float i1;
+  float i2;
+  float i3;
+  float i4;
+  PVector c1, c2, c3, c4;
+  int i = 0;
+  for (int[] quad : quads) {
+    PVector l1 = lines.get(quad[0]);
+    PVector l2 = lines.get(quad[1]);
+    PVector l3 = lines.get(quad[2]);
+    PVector l4 = lines.get(quad[3]);
+    c1 = qg.intersection(l1, l2);
+    c2 = qg.intersection(l2, l3);
+    c3 = qg.intersection(l3, l4);
+    c4 = qg.intersection(l4, l1);
+
+    i1=c1.cross(c2).z;
+    i2=c2.cross(c3).z;
+    i3=c3.cross(c4).z;
+    i4=c4.cross(c1).z;
+    float area = Math.abs(0.5f * (i1 + i2 + i3 + i4));
+
     if (area > maxArea) {
       maxArea = area;
       maxIdx = i;
     }
+    i++;
   }
-  return quads.get(i);
+  return quads.get(maxIdx);
 }

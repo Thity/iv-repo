@@ -1,19 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @Charlypan
- Unwatch 3
-  Star 1
- Fork 0 Thity/iv-repo
- Code  Issues 1  Pull requests 0  Wiki  Pulse  Graphs
-Branch: master Find file Copy pathiv-repo/Milestone 3/Display/QuadGraph.pde
-28d89ff  2 hours ago
- Rafael Ulises Luzius Pizarro Solar Doing final
-0 contributors
-RawBlameHistory    359 lines (286 sloc)  8.5 KB
 /**
  * @file QuadGraph.pde
  * @brief quad graph of the corners of plate
