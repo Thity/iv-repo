@@ -127,35 +127,37 @@ void draw() {
     qg.build(lines, img.width, img.height);
     List<int[]> quads = qg.findCycles();
     int[] bestQuad = findBestQuad(quads, lines);
-    /* Draw Quad */
-    /* Get corners */
-    List<PVector> corners = new ArrayList<PVector>();
+    if (!quads.isEmpty()) {
+      /* Draw Quad */
+      /* Get corners */
+      List<PVector> corners = new ArrayList<PVector>();
 
-    corners.add(lines.get(bestQuad[0]));
-    corners.add(lines.get(bestQuad[1]));
-    corners.add(lines.get(bestQuad[2]));
-    corners.add(lines.get(bestQuad[3]));
-    // (intersection() is a simplified version of the
-    // intersections() method you wrote last week, that simply
-    // return the coordinates of the intersection between 2 lines)
-    PVector c12 = qg.intersection(corners.get(0), corners.get(1));
-    PVector c23 = qg.intersection(corners.get(1), corners.get(2));
-    PVector c34 = qg.intersection(corners.get(2), corners.get(3));
-    PVector c41 = qg.intersection(corners.get(3), corners.get(0));
-    // Choose a random, semi-transparent colour
-    Random random = new Random();
-    if (qg.isConvex(c12, c23, c34, c41) && qg.validArea(c12, c23, c34, c41, 10000000, 0) && qg.nonFlatQuad(c12, c23, c34, c41)) {
-      fill(color(min(255, random.nextInt(300)), 
-        min(255, random.nextInt(300)), 
-        min(255, random.nextInt(300)), 50));
-      quad(c12.x, c12.y, c23.x, c23.y, c34.x, c34.y, c41.x, c41.y);
+      corners.add(lines.get(bestQuad[0]));
+      corners.add(lines.get(bestQuad[1]));
+      corners.add(lines.get(bestQuad[2]));
+      corners.add(lines.get(bestQuad[3]));
+      // (intersection() is a simplified version of the
+      // intersections() method you wrote last week, that simply
+      // return the coordinates of the intersection between 2 lines)
+      PVector c12 = qg.intersection(corners.get(0), corners.get(1));
+      PVector c23 = qg.intersection(corners.get(1), corners.get(2));
+      PVector c34 = qg.intersection(corners.get(2), corners.get(3));
+      PVector c41 = qg.intersection(corners.get(3), corners.get(0));
+      // Choose a random, semi-transparent colour
+      Random random = new Random();
+      if (qg.isConvex(c12, c23, c34, c41) && qg.validArea(c12, c23, c34, c41, 10000000, 0) && qg.nonFlatQuad(c12, c23, c34, c41)) {
+        fill(color(min(255, random.nextInt(300)), 
+          min(255, random.nextInt(300)), 
+          min(255, random.nextInt(300)), 50));
+        quad(c12.x, c12.y, c23.x, c23.y, c34.x, c34.y, c41.x, c41.y);
+      }
+      /* Get rotation */
+      PVector rot = twoToThree.get3DRotations(corners);
+      rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
+      rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
+      rx = rot.x;
+      rz = rot.y;
     }
-    /* Get rotation */
-    PVector rot = twoToThree.get3DRotations(corners);
-    rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
-    rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
-    rx = rot.x;
-    rz = rot.y;
   }
 }
 
