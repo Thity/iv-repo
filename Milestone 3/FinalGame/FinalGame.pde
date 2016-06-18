@@ -113,7 +113,7 @@ void draw() {
   fill(255, 255, 255);
   dashboard.drawAll();
   /* Image processing to get quads and move board */
-  if (frames % 10 == 0) {
+  if (frames % 5 == 0) {
     img = cam.get();
     img = filter.HSBFilter(img, minHue, maxHue, minSat, maxSat, minBri, maxBri);
     img = conv.gaussianBlur(img);
@@ -123,6 +123,10 @@ void draw() {
     img = conv.gaussianBlur(img);
     img = conv.sobel(img);
     hough.hough(img);
+    image(img, 0, 0);
+    hough.drawBestLines(img);
+    hough.drawIntersections();
+
     List<PVector> lines = hough.getBestLines();
     qg.build(lines, img.width, img.height);
     List<int[]> quads = qg.findCycles();

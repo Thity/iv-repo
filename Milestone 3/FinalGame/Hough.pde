@@ -73,6 +73,13 @@ class Hough {
     }
   }
 
+  public void drawIntersections() {
+    for (PVector point : intersections) {
+      fill(255, 128, 0);
+      ellipse(point.x, point.y, 10, 10);
+    }
+  }
+
 
   public void getIntersections(List<PVector> lines) {
     ArrayList<PVector> intersections = new ArrayList<PVector>();
@@ -149,7 +156,7 @@ class Hough {
 
   private void createBestLinesPolars() {
     int n = bestCandidates.size();
-    if(n > 4) n = 4;
+    if (n > 4) n = 4;
     for (int i = 0; i < n; i++) {
       bestLines.add(computePolars(bestCandidates.get(i)));
     }
@@ -166,10 +173,10 @@ class Hough {
     getIntersections(bestLines);
     return intersections;
     /*for (PVector point : intersections) {
-      fill(255, 128, 0);
-      ellipse(point.x, point.y, 10, 10);
-    }
-    */
+     fill(255, 128, 0);
+     ellipse(point.x, point.y, 10, 10);
+     }
+     */
   }
 
   /* Given functions */
