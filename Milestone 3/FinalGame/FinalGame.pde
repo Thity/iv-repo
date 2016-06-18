@@ -53,7 +53,7 @@ private int frames;
 //Mouse
 
 // Classes
-
+ImageProcessing imgproc;
 
 void setup() {
   frames = 0;
@@ -64,6 +64,10 @@ void setup() {
   setupCylinderShapes();
   dashboard = new Dashboard();
   ball = new Mover(-boxX / 2, boxX / 2, -boxZ / 2, boxZ / 2, radiusBall, dashboard);
+  // For image feedback
+  imgproc = new ImageProcessing();
+  String []args = {"Image processing window"};
+  PApplet.runSketch(args, imgproc);
 }
 
 
