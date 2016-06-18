@@ -126,8 +126,8 @@ void draw() {
     List<PVector> lines = hough.getBestLines();
     qg.build(lines, img.width, img.height);
     List<int[]> quads = qg.findCycles();
-    int[] bestQuad = findBestQuad(quads, lines);
     if (!quads.isEmpty()) {
+      int[] bestQuad = findBestQuad(quads, lines);
       /* Draw Quad */
       /* Get corners */
       List<PVector> corners = new ArrayList<PVector>();
