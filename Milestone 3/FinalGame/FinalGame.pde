@@ -132,38 +132,49 @@ void draw() {
     hough.hough(img);
 
     List<PVector> lines = hough.getBestLines();
+    //hough.drawBestLines(img);
+    //hough.getIntersections(lines);
+    //hough.drawIntersections();
     qg.build(lines, img.width, img.height);
     List<int[]> quads = qg.findCycles();
     if (!quads.isEmpty()) {
       int[] bestQuad = findBestQuad(quads, lines);
+
       /* Draw Quad */
       /* Get corners */
       List<PVector> corners = new ArrayList<PVector>();
 
-      corners.add(lines.get(bestQuad[0]));
-      corners.add(lines.get(bestQuad[1]));
-      corners.add(lines.get(bestQuad[2]));
-      corners.add(lines.get(bestQuad[3]));
+
+      PVector l1 = lines.get(bestQuad[0]);
+      PVector l2 = lines.get(bestQuad[1]);
+      PVector l3 = lines.get(bestQuad[2]);
+      PVector l4 = lines.get(bestQuad[3]);
+
+      corners.add(qg.intersection(l1, l2));
+      corners.add(qg.intersection(l2, l3));
+      corners.add(qg.intersection(l3, l4));
+      corners.add(qg.intersection(l4, l1));
+      qg.sortCorners(corners);
       // (intersection() is a simplified version of the
       // intersections() method you wrote last week, that simply
       // return the coordinates of the intersection between 2 lines)
       // Get rotation 
       PVector rot = twoToThree.get3DRotations(corners);
-      //rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
-      //rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
+      rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
+      rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
       rx = rot.x;
       rz = rot.y;
+      println("X-Rotation: " + Math.toDegrees(rot.x));
+      println("Y-Rotation: " + Math.toDegrees(rot.y));
+      println("Z-Rotation: " + Math.toDegrees(rot.z));
     }
   }
 }
 
 public int[] findBestQuad(List<int[]> quads, List<PVector> lines) {
   float maxArea = 0;
-  int maxIdx = 0;
-  float i1;
-  float i2;
-  float i3;
-  float i4;
+  int index = 0;
+  float i1, i2, i3, i4;
   PVector c1, c2, c3, c4;
   int i = 0;
   for (int[] quad : quads) {
@@ -184,11 +195,11 @@ public int[] findBestQuad(List<int[]> quads, List<PVector> lines) {
 
     if (area > maxArea) {
       maxArea = area;
-      maxIdx = i;
+      index = i;
     }
     i++;
   }
-  return quads.get(maxIdx);
+  return quads.get(index);
 }
 PImage img2;
 Hough hough2 = new Hough();
@@ -199,22 +210,23 @@ class myWindow extends PApplet {
   void setup() {
   }
   void draw() {
-    if(frames > 5){
-       image(img,0,0);
+    if (frames > 5) {
+      image(img, 0, 0);
     }
+
     /*
     img2 = filter.HSBFilter(img2, minHue, maxHue, minSat, maxSat, minBri, maxBri);
-    img2 = conv.gaussianBlur(img2);
-    img2 = conv.gaussianBlur(img2);
-    img2 = filter.transformToBW(img2, 150, 255);
-    img2 = conv.gaussianBlur(img2);
-    img2 = conv.gaussianBlur(img2);
-    img2 = conv.sobel(img2);
-    hough2.hough(img2);
-    image(img2, 0, 0);
-    hough2.drawBestLines(img2);
-    hough2.drawIntersections();
-    */
+     img2 = conv.gaussianBlur(img2);
+     img2 = conv.gaussianBlur(img2);
+     img2 = filter.transformToBW(img2, 150, 255);
+     img2 = conv.gaussianBlur(img2);
+     img2 = conv.gaussianBlur(img2);
+     img2 = conv.sobel(img2);
+     hough2.hough(img2);
+     image(img2, 0, 0);
+     hough2.drawBestLines(img2);
+     hough2.drawIntersections();
+     */
   }
 }
 void movieEvent(Movie m) {

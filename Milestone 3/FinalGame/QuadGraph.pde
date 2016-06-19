@@ -328,20 +328,6 @@ class QuadGraph {
 
     return quad;
   }
-
-  public List<PVector> sortCorners2(List<PVector> quad) {
-    // Sort corners so that they are ordered clockwise
-    PVector a = quad.get(0);
-    PVector b = quad.get(2);
-    PVector center = new PVector((a.x+b.x)/2, (a.y+b.y)/2);
-    Collections.sort(quad, new CWComparator(center));
-    // TODO:
-    // Re-order the corners so that the first one is the closest to the
-    // origin (0,0) of the image.
-    // You can use Collections.rotate to shift the corners inside the quad.
-
-    return quad;
-  }
 }
 
 class CWComparator implements Comparator<PVector> {
