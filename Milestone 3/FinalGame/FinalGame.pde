@@ -53,19 +53,19 @@ int frames;
 
 
 //Mouse
-
-// Classes
 myWindow mywin;
+// Classes
 void setup() {
   frames = 0;
-    cam = new Movie(this, "testvideo.mp4");
-    cam.play();
-  twoToThree = new TwoDThreeD(WINDOW_WIDTH, WINDOW_HEIGHT);
+  cam = new Movie(this, "testvideo.mp4");
+  cam.play();
+  cam.updatePixels();
+  PImage justToCheckSize = cam.get();
+  twoToThree = new TwoDThreeD(justToCheckSize.width, justToCheckSize.height);
   noStroke();
   setupCylinderShapes();
   dashboard = new Dashboard();
   ball = new Mover(-boxX / 2, boxX / 2, -boxZ / 2, boxZ / 2, radiusBall, dashboard);
-  // For image feedback
   mywin = new myWindow();
   String []args = {"Image processing window"}; 
   PApplet.runSketch(args, mywin);
@@ -118,8 +118,10 @@ void draw() {
   fill(255, 255, 255);
   dashboard.drawAll();
   // Image processing to get quads and move board
-  if (frames % 5 == 0) { //frames % 5 == 0) {
+  if (frames %  5 == 0) {
+    cam.updatePixels();
     img = cam.get();
+    img.updatePixels();
     img = filter.HSBFilter(img, minHue, maxHue, minSat, maxSat, minBri, maxBri);
     img = conv.gaussianBlur(img);
     img = conv.gaussianBlur(img);
@@ -128,9 +130,6 @@ void draw() {
     img = conv.gaussianBlur(img);
     img = conv.sobel(img);
     hough.hough(img);
-    image(img, 0, 0);
-    hough.drawBestLines(img);
-    hough.drawIntersections();
 
     List<PVector> lines = hough.getBestLines();
     qg.build(lines, img.width, img.height);
@@ -148,24 +147,10 @@ void draw() {
       // (intersection() is a simplified version of the
       // intersections() method you wrote last week, that simply
       // return the coordinates of the intersection between 2 lines)
-      /*
-      PVector c12 = qg.intersection(corners.get(0), corners.get(1));
-      PVector c23 = qg.intersection(corners.get(1), corners.get(2));
-      PVector c34 = qg.intersection(corners.get(2), corners.get(3));
-      PVector c41 = qg.intersection(corners.get(3), corners.get(0));
-      // Choose a random, semi-transparent colour
-      Random random = new Random();
-      if (qg.isConvex(c12, c23, c34, c41) && qg.validArea(c12, c23, c34, c41, 10000000, 0) && qg.nonFlatQuad(c12, c23, c34, c41)) {
-        fill(color(min(255, random.nextInt(300)), 
-          min(255, random.nextInt(300)), 
-          min(255, random.nextInt(300)), 50));
-        quad(c12.x, c12.y, c23.x, c23.y, c34.x, c34.y, c41.x, c41.y);
-      }
-      */
       // Get rotation 
       PVector rot = twoToThree.get3DRotations(corners);
-      rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
-      rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
+      //rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
+      //rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
       rx = rot.x;
       rz = rot.y;
     }
@@ -207,29 +192,31 @@ public int[] findBestQuad(List<int[]> quads, List<PVector> lines) {
 }
 PImage img2;
 Hough hough2 = new Hough();
-Movie cam2;
 class myWindow extends PApplet {
   void settings() {
-    size(1000, 600, P3D);
+    size(cam.width, cam.height, P3D);
   }
   void setup() {
-
   }
   void draw() {
-    cam.updatePixels();
-    img2 = cam.get();
-    image(img2, 0, 0);
-    print("Here");
-    
+    if(frames > 5){
+       image(img,0,0);
+    }
+    /*
     img2 = filter.HSBFilter(img2, minHue, maxHue, minSat, maxSat, minBri, maxBri);
-     img2 = conv.gaussianBlur(img2);
-     img2 = conv.gaussianBlur(img2);
-     img2 = filter.transformToBW(img2, 150, 255);
-     img2 = conv.gaussianBlur(img2);
-     img2 = conv.gaussianBlur(img2);
-     img2 = conv.sobel(img2);
-     hough2.hough(img2);
-     image(img2, 0, 0);
-     
+    img2 = conv.gaussianBlur(img2);
+    img2 = conv.gaussianBlur(img2);
+    img2 = filter.transformToBW(img2, 150, 255);
+    img2 = conv.gaussianBlur(img2);
+    img2 = conv.gaussianBlur(img2);
+    img2 = conv.sobel(img2);
+    hough2.hough(img2);
+    image(img2, 0, 0);
+    hough2.drawBestLines(img2);
+    hough2.drawIntersections();
+    */
   }
+}
+void movieEvent(Movie m) {
+  m.read();
 }

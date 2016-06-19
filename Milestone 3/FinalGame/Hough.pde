@@ -154,8 +154,9 @@ class Hough {
     }
   }
 
-  private void createBestLinesPolars() {
+  public void createBestLinesPolars() {
     int n = bestCandidates.size();
+    bestLines = new ArrayList<PVector>();
     if (n > 4) n = 4;
     for (int i = 0; i < n; i++) {
       bestLines.add(computePolars(bestCandidates.get(i)));
@@ -182,7 +183,7 @@ class Hough {
   /* Given functions */
 
   private void computeBestCandidates() {
-
+    bestCandidates = new ArrayList<Integer>();
     // only search around lines with more that this amount of votes
     // (to be adapted to your image)
     int minVotes = 200;
@@ -240,6 +241,7 @@ class Hough {
   }
 
   public List<PVector> getBestLines() {
+    createBestLinesPolars();
     return bestLines;
   }
 }

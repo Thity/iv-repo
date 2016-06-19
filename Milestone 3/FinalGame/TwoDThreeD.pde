@@ -91,10 +91,10 @@ class TwoDThreeD {
         1};
 
       float[] newP = Mat.multiply(invK, p);
-      projectedCorners[i] = newP;
-      //for (int i = 0; j < 3; j++) {
-      //  projectedCorners[i][j] = newP[j];
-      //}
+      //projectedCorners[i] = newP;
+      for (int j = 0; j < 3; j++) {
+        projectedCorners[i][j] = newP[j];
+      }
     }
 
     // 'A' contains the cross-product (K^(-1) · p) X P
