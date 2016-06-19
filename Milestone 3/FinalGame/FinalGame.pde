@@ -25,7 +25,6 @@ private final static int boxZ = boxSide;
 private final static int boxCenterX = WINDOW_WIDTH/2;
 private final static int boxCenterY = 2*WINDOW_HEIGHT/5;
 private Dashboard dashboard;
-private Movie cam;
 private TwoDThreeD twoToThree;
 
 // For image
@@ -43,27 +42,33 @@ private float maxSat = 255;
 private float minBri = 32;
 private float maxBri = 149;
 //private Capture cam;
-private PImage img;
+PImage img;
+Movie cam;
+
 Convolution conv = new Convolution();
 FilterColors filter = new FilterColors();
 QuadGraph qg = new QuadGraph();
 Hough hough = new Hough();
-private int frames;
+int frames;
+
 
 //Mouse
 
 // Classes
-
+myWindow mywin;
 void setup() {
   frames = 0;
-  cam = new Movie(this, "testvideo.mp4");
-  cam.loop();
+    cam = new Movie(this, "testvideo.mp4");
+    cam.play();
   twoToThree = new TwoDThreeD(WINDOW_WIDTH, WINDOW_HEIGHT);
   noStroke();
   setupCylinderShapes();
   dashboard = new Dashboard();
   ball = new Mover(-boxX / 2, boxX / 2, -boxZ / 2, boxZ / 2, radiusBall, dashboard);
   // For image feedback
+  mywin = new myWindow();
+  String []args = {"Image processing window"}; 
+  PApplet.runSketch(args, mywin);
 }
 
 
@@ -112,8 +117,8 @@ void draw() {
   popMatrix();
   fill(255, 255, 255);
   dashboard.drawAll();
-  /* Image processing to get quads and move board */
-  if (frames % 5 == 0) {
+  // Image processing to get quads and move board
+  if (frames % 5 == 0) { //frames % 5 == 0) {
     img = cam.get();
     img = filter.HSBFilter(img, minHue, maxHue, minSat, maxSat, minBri, maxBri);
     img = conv.gaussianBlur(img);
@@ -143,6 +148,7 @@ void draw() {
       // (intersection() is a simplified version of the
       // intersections() method you wrote last week, that simply
       // return the coordinates of the intersection between 2 lines)
+      /*
       PVector c12 = qg.intersection(corners.get(0), corners.get(1));
       PVector c23 = qg.intersection(corners.get(1), corners.get(2));
       PVector c34 = qg.intersection(corners.get(2), corners.get(3));
@@ -155,7 +161,8 @@ void draw() {
           min(255, random.nextInt(300)), 50));
         quad(c12.x, c12.y, c23.x, c23.y, c34.x, c34.y, c41.x, c41.y);
       }
-      /* Get rotation */
+      */
+      // Get rotation 
       PVector rot = twoToThree.get3DRotations(corners);
       rot.x = (rot.x > Math.PI/2) ? (float) (rot.x - Math.PI) : rot.x;
       rot.x = (rot.x < -Math.PI/2) ? (float) (rot.x + Math.PI) : rot.x;      
@@ -197,4 +204,32 @@ public int[] findBestQuad(List<int[]> quads, List<PVector> lines) {
     i++;
   }
   return quads.get(maxIdx);
+}
+PImage img2;
+Hough hough2 = new Hough();
+Movie cam2;
+class myWindow extends PApplet {
+  void settings() {
+    size(1000, 600, P3D);
+  }
+  void setup() {
+
+  }
+  void draw() {
+    cam.updatePixels();
+    img2 = cam.get();
+    image(img2, 0, 0);
+    print("Here");
+    
+    img2 = filter.HSBFilter(img2, minHue, maxHue, minSat, maxSat, minBri, maxBri);
+     img2 = conv.gaussianBlur(img2);
+     img2 = conv.gaussianBlur(img2);
+     img2 = filter.transformToBW(img2, 150, 255);
+     img2 = conv.gaussianBlur(img2);
+     img2 = conv.gaussianBlur(img2);
+     img2 = conv.sobel(img2);
+     hough2.hough(img2);
+     image(img2, 0, 0);
+     
+  }
 }
