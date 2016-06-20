@@ -186,7 +186,7 @@ class Hough {
     bestCandidates = new ArrayList<Integer>();
     // only search around lines with more that this amount of votes
     // (to be adapted to your image)
-    int minVotes = 200;
+    int minVotes = 100;
 
     for (int accR = 0; accR < rDim; accR++) {
       for (int accPhi = 0; accPhi < phiDim; accPhi++) {
